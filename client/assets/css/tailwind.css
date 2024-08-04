@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Exo+2&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Sedgwick+Ave+Display&display=swap'); 
+
+
 @tailwind base;
 /* Firefox */
 * {
@@ -25,6 +28,7 @@
 @tailwind utilities;
 
 :root {
+  --bg-header: transparent;
   --primary: rgb(0, 0, 0);
   --secondary: rgb(255, 255, 255);
 }
@@ -36,4 +40,260 @@ html {
   background-color: transparent;
   /*font-size:x-large;*/
   overflow-x: hidden;
+}
+
+/*bg specified in root and applied here with the name i gave above*/
+header {
+  background-color: var(--bg-header);
+  z-index: 10;
+}
+
+/*header*/
+.navbar {
+  @apply flex flex-row items-center flex-nowrap 
+  justify-between w-full fixed text-white py-2 
+  h-[2.5rem] tablet:h-[3rem] p-[1.2rem];
+}
+
+.dropdown {
+  @apply block px-4 py-2 text-sm capitalize text-slate-600 
+ hover:bg-slate-400 hover:text-white hover:cursor-pointer;
+}
+
+.bar {
+  @apply absolute w-32 mt-6 right-0 bg-white rounded-md 
+  shadow-xl z-20 text-black;
+}
+
+.headerbtn {
+  @apply flex justify-center w-fit hover:bg-white 
+  hover:bg-opacity-40 rounded-md p-2;
+}
+
+.headersvg {
+  @apply object-center w-6 h-6 text-black;
+}
+
+.shoppingbag {
+  @apply relative bg-transparent text-black;
+}
+
+.tooltip {
+  @apply flex relative bg-transparent text-black 
+  text-[14px] font-bold object-center;
+}
+
+/*sections*/
+.section {
+  @apply w-full h-screen relative scroll-smooth;
+}
+
+.section_img {
+  @apply w-full h-full object-cover;
+}
+
+.details {
+  @apply text-xl underline cursor-pointer absolute top-[90%] 
+  left-[40%] laptop:left-[47%] text-center text-[#050505] 
+  hover:text-2xl animate-bounce mx-auto;
+}
+
+.transform_50 {
+  transform: translate(-50%, -50%);
+}
+
+/*footer*/
+
+.social {
+  @apply text-sm laptop:text-lg desktop:text-2xl  font-semibold
+text-[#eceef3] tablet:text-black desktop:text-white
+  mx-[0.4rem] px-[0.3rem] py-[0.1rem] rounded-[0.5rem]
+  bg-transparent hover:bg-[#f4f4f7] hover:bg-opacity-10 
+  transition-all duration-300 hover:text-lg laptop:hover:text-2xl desktop:hover:text-4xl;
+}
+
+.footerlinks {
+  @apply no-underline hover:bg-[#f4f4f7] 
+  hover:bg-opacity-10 transition-all duration-300
+  rounded-[0.4rem] px-2 hover:cursor-pointer;
+}
+
+/*modal*/
+
+/*.backdrop {
+  @apply fixed inset-0 h-full w-full z-10
+}*/
+
+.backdrop {
+  @apply top-0 fixed bg-gray-500 bg-opacity-50
+ w-full h-full grid justify-items-stretch;
+}
+
+.modal {
+  @apply w-screen laptop:w-[850px] desktop:w-[1100px] h-screen
+  p-1 rounded-lg object-center z-10 mt-8
+ bg-[#F4F9FF] relative pt-3 place-self-center
+  overflow-y-scroll top-4 appearance-none overscroll-contain;
+}
+
+.items {
+  /*div that contains the items*/
+  @apply grid px-4 h-fit
+  grid-cols-1 mobile:grid-cols-2 tablet:grid-cols-3 
+  grid-rows-2 gap-y-5 gap-x-3 auto-cols-min 
+  justify-items-stretch desktop:gap-y-16 pt-5;
+}
+
+.exitbtn {
+  @apply flex w-fit rounded-3xl p-2 
+  hover:text-red-600 hover:bg-black hover:bg-opacity-5;
+}
+
+.positionexitbtn {
+  @apply w-screen laptop:w-[800px] desktop:w-[1000px] 
+  grid place-items-end absolute top-0 right-1;
+}
+
+/*item*/
+.buybar {
+  /*div that contains item's buttons and divs*/
+  @apply flex flex-row flex-wrap w-full h-24 justify-between
+  desktop:mt-20;
+}
+
+.btnmodal {
+  /*item's button*/
+  @apply border-2 rounded-lg border-solid 
+  w-fit h-fit text-gray-600 flex justify-center p-1
+  hover:text-black hover:border-black text-[8px] 
+  text-xs  tablet:text-sm;
+}
+
+.btnmodalsvg {
+  /*svg in item's button*/
+  @apply w-4 h-4  tablet:w-5 tablet:h-5;
+}
+
+.size {
+  /*div that contains the size options*/
+  @apply absolute bg-white  
+  shadow-xl grid border-2 rounded-lg border-solid 
+  w-fit h-fit text-gray-600 
+  text-[8px] tablet:text-xs;
+}
+
+.show {
+  /*div of size when u hover it shows size options*/
+  @apply border-2 rounded-lg border-solid 
+  w-fit h-fit text-gray-600 flex justify-center p-1
+  hover:border-black tablet:text-sm 
+  text-xs hover:cursor-pointer overflow-hidden appearance-none;
+}
+
+.imgitem {
+  /*imgs of items*/
+  @apply h-[200px] desktop:h-[280px] desktop:hover:rounded-md 
+  desktop:hover:shadow-xl object-cover desktop:w-[580px]
+  w-[500px];
+}
+
+/*shoppingbag component*/
+.shoppings {
+  @apply w-[240px] h-[310px] tablet:w-[300px] 
+  tablet:h-[400px] desktop:w-[400px] 
+  desktop:h-[570px] bg-white 
+  rounded-md relative z-10 justify-self-end top-14 right-8 
+  grid py-4 appearance-none  overflow-auto border-2 
+  border-[#363636];
+}
+.chosenitems {
+  @apply bg-white h-[230px] tablet:w-[300px] 
+  tablet:h-[300px] 
+  desktop:w-[370px] desktop:h-[470px]
+  place-self-center self-start border-solid 
+  border-b-2 border-black overflow-auto rounded-md;
+}
+
+.fav {
+  @apply w-[240px] h-[280px] tablet:w-[300px] tablet:h-[350px] desktop:w-[400px] 
+  desktop:h-[520px] bg-white rounded-md relative
+  z-10 justify-self-end top-14 right-8 grid pb-2 
+  overscroll-none appearance-none border-2 
+  border-[#363636];
+}
+
+.favitem {
+  @apply bg-white h-[230px] tablet:w-[270px] 
+  tablet:h-[300px] 
+  desktop:w-[370px] desktop:h-[470px] 
+  place-self-end self-start border-solid 
+  border-b-2 border-black overflow-auto;
+}
+
+.invbackdrop {
+  @apply top-0 fixed w-full h-full grid 
+  justify-items-stretch  bg-transparent z-20;
+}
+
+.imgshop {
+  @apply w-[100px] h-[100px] tablet:w-[100px] tablet:h-[150px] desktop:w-[200px] desktop:h-[200px] border-solid 
+  border-2  rounded-lg relative hover:shadow-xl;
+}
+
+.carttitle {
+  @apply font-bold w-fit relative
+  top-1 left-[40%] border-solid border-b-2 
+  border-black text-xs tablet:text-base 
+  desktop:text-xl;
+}
+
+.cartdetails {
+  @apply relative place-self-center text-xs 
+  tablet:text-sm desktop:text-lg;
+}
+
+.costs {
+  @apply h-max sticky flex items-center 
+  justify-between w-full px-4;
+}
+
+.costbtn {
+  @apply border-2 rounded-lg border-solid 
+  w-fit h-fit flex p-1 text-black 
+  hover:border-black self-center
+  text-xs tablet:text-base font-bold;
+}
+
+/*signup form*/
+form {
+  @apply bg-[white] text-left h-max
+  px-[50px] border-none  w-full;
+}
+label {
+  @apply text-black inline-block
+  mt-[25px] mb-[15px] text-[14px] 
+  font-semibold;
+}
+input,
+select {
+  @apply block
+  pt-[10px] pr-[6px]
+  w-[100%] border-b-[1px] border-solid 
+  border-slate-200 outline-none text-[14px];
+}
+
+.buton {
+  @apply bg-[#363636] hover:bg-[#292929] hover:text-lg
+  py-[10px] px-[20px] rounded-lg
+  mt-[20px] font-bold
+  text-white uppercase place-self-start;
+}
+
+.submit {
+  @apply text-center  grid;
+}
+.error {
+  @apply text-red-400
+  mt-[10px]
+  font-bold;
 }
