@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   app: {
     head: {
         link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
-        title: 'Academia'
+        title: "August's"
     }
 },
   devtools: { enabled: true },
