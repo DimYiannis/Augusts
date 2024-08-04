@@ -4,25 +4,25 @@
     <div class="w-screen my-20 ">
       <div class="text-center text-xl">Style Yourself: Elevate Your Look with Our Trendy Apparel Collection</div>
       <div class="items">
-        <jacket v-for="jacket in items.jackets" :jacket="jacket" 
+        <Jacket v-for="jacket in items.jackets" :jacket="jacket" 
           :key="jacket.id" 
           @add-to-cart="addToCart"
           @add-to-fav="addToFav">
-        </jacket>
+        </Jacket>
 
-        <accessories v-for="accessory in items.accessories" 
+        <Accessories v-for="accessory in items.accessories" 
         :accessory="accessory" 
         :key="accessory.id"
         @add-to-cart="addToCart"
         @add-to-fav="addToFav">
-        </accessories>
+        </Accessories>
 
-        <shoes v-for="shoe in items.shoes"
+        <Shoes v-for="shoe in items.shoes"
         :shoe="shoe" 
         :key="shoe.id"  
         @add-to-cart="addToCart"           
         @add-to-fav="addToFav" >          
-        </shoes>
+        </Shoes>
     
       </div> 
       
@@ -31,15 +31,8 @@
   </template>
   
   <script>
-  import jacket from '../components/jacket.vue';
-  import accessories from '../components/accessories.vue';
-  import shoes from '../components/shoes.vue';
   
   export default {
-    components: {
-      jacket,accessories,shoes,
-    },
-  
     data() {
       return {
         items: {

@@ -2,7 +2,7 @@
 <template>
   <header class="navbar">
     <div class="flex-1 basis-2/3 text-4xl text-black">
-      <router-link to="/">August's</router-link>
+      <NuxtLink to="/">August's</NuxtLink>
     </div>
 
     <!--Sign Up-->
@@ -136,14 +136,14 @@
     </div>
     <div class="relative" @mouseleave="toggleBar">
       <div v-if="showBar" @click="toggleBar" class="bar">
-        <router-link to="/" class="dropdown">Home</router-link>
-        <router-link to="/sweats" class="dropdown">Sweats</router-link>
-        <router-link to="/shirts" class="dropdown">Shirts</router-link>
-        <router-link to="/bottoms" class="dropdown">Bottoms</router-link>
+        <NuxtLink to="/" class="dropdown">Home</NuxtLink>
+        <NuxtLink to="/sweats" class="dropdown">Sweats</NuxtLink>
+        <NuxtLink to="/shirts" class="dropdown">Shirts</NuxtLink>
+        <NuxtLink to="/bottoms" class="dropdown">Bottoms</NuxtLink>
       </div>
     </div>
 
-    <Teleport to="#modal">
+    <Teleport to="body">
       <shoppingBag
         v-if="showShoppings"
         :cart-items="cartItems"
@@ -154,7 +154,7 @@
       />
     </Teleport>
 
-    <Teleport to="#modal">
+    <Teleport to="body">
       <favorites
         v-show="showFav"
         :fav-items="favItems"
@@ -165,17 +165,17 @@
       />
     </Teleport>
 
-    <Teleport to="#modal">
+    <Teleport to="body">
       <SignUp v-show="showSignup" @close="showSignup = false" />
     </Teleport>
 
-    <Teleport to="#modal">
+    <Teleport to="body">
       <tooltip v-show="showTooltip" @close="showTooltip = false" />
     </Teleport>
 
     <!--dyn component so that only one tab is shown each time
         plus less code-->
-    <Teleport to="#modal">
+    <Teleport to="#body">
       <component
         :is="activeTab"
         @close="closeTab"

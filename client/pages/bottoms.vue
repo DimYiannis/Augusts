@@ -18,7 +18,6 @@
 </template>
     
     <script>
-import item from '../components/item.vue';    
 export default {
   name: 'bottoms',
     data() {
@@ -69,9 +68,6 @@ export default {
           },
         ],
       }
-    },
-    components: {
-      item,    
     },
     methods: {
     closeBottoms() {

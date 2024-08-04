@@ -3,9 +3,9 @@
    <section id="entry" class="section">
         <img src="../assets/nonchal2.jpg" class="section_img">
         
-        <router-link to="/Apparel" class="details">
+        <NuxtLink to="/Apparel" class="details">
             Exclusive Apparel
-        </router-link>
+        </NuxtLink>
 
     </section>
     <!--entry Section End-->
@@ -14,12 +14,12 @@
     <section id="sweats" class="section">
         <img src="../assets/gen6.jpg" alt="sweats Image" class="section_img">
     
-        <router-link to="/sweats" class="object-center text-xl animate-bounce 
+        <NuxtLink to="/sweats" class="object-center text-xl animate-bounce 
         hover:text-2xl underline cursor-pointer absolute 
         top-[90%] left-[40%] laptop:left-[47%] text-white"
         >
         Sweats
-        </router-link>
+        </NuxtLink>
     </section>
     <!--sweats Section End-->
     
@@ -27,9 +27,9 @@
     <section id="shirts" class="section">
         <img src="../assets/gen1.jpg" alt="shirts Image" class=" section_img ">
 
-        <router-link to="/shirts" class="details" >
+        <NuxtLink to="/shirts" class="details" >
             Shirts
-        </router-link>
+        </NuxtLink>
     </section>
     <!--shirts Section End-->
 
@@ -37,9 +37,9 @@
     <section id="pants" class="section">
         <img src="../assets/klaudia-piaskowska-Zy6oNZRdcjc-unsplash.jpg" alt="bottoms Image" class="section_img">
 
-        <router-link to="/bottoms" class="details">
+        <NuxtLink to="/bottoms" class="details">
          Bottoms
-        </router-link>
+        </NuxtLink>
         
         
 
