@@ -6,11 +6,7 @@
     </div>
 
     <!--Sign Up-->
-    <button
-      @click="activeTab = 'SignUp'"
-      class="headerbtn"
-      @toggle-login="ToggleLogin"
-    >
+    <button @click="showSignUp=true" class="headerbtn">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
@@ -143,8 +139,19 @@
       </div>
     </div>
 
+    <!-- Teleported Components -->
     <Teleport to="body">
-      <shoppingBag
+      <SignUp
+        v-if="showSignUp"
+        @close="showSignUp=false"
+        @toggle-login="showLogin = true ; showSignUp = false"
+      />
+      <Login
+        v-if="showLogin"
+        @close="showLogin = false"
+        @toggle-signup="showSignUp = true ; showLogin = false"
+      />
+      <ShoppingBag
         v-if="showShoppings"
         :cart-items="cartItems"
         @order="order"
@@ -152,163 +159,96 @@
         @remove-from-cart="removeFromCart"
         @close-cart="showShoppings = false"
       />
-    </Teleport>
-
-    <Teleport to="body">
-      <favorites
-        v-show="showFav"
+      <Favorites
+        v-if="showFav"
         :fav-items="favItems"
         @add-to-fav="addToFav"
         @remove-from-fav="removeFromFav"
         @close-fav="showFav = false"
         @add-to-cart="addToCart"
       />
-    </Teleport>
-
-    <Teleport to="body">
-      <SignUp v-show="showSignup" @close="showSignup = false" />
-    </Teleport>
-
-    <Teleport to="body">
-      <tooltip v-show="showTooltip" @close="showTooltip = false" />
-    </Teleport>
-
-    <!--dyn component so that only one tab is shown each time
-        plus less code-->
-    <Teleport to="#body">
-      <component
-        :is="activeTab"
-        @close="closeTab"
-        @toggle-login="ToggleLogin"
-        @toggle-signup="ToggleSignup"
-      />
+      <Tooltip v-if="showTooltip" @close="showTooltip = false" />
     </Teleport>
   </header>
 
   <slot />
 </template>
-<script>
+<script setup>
+import { ref, computed } from "vue";
+import { Login, SignUp } from "#components";
 
-export default {
-  data() {
-    return {
-      showBar: false,
-      showBagtip: false,
-      showFavtip: false,
-      showShoppings: false,
-      showFav: false,
-      showSignup: false,
-      showLogin: false,
-      showTooltip: false,
-      activeTab: "",
-      cartItems: [],
-      favItems: [],
-    };
-  },
-  computed: {
-    totalItems() {
-      return this.cartItems.reduce((acc, item) => acc + item.quantity, 0);
-    },
-    totalFav() {
-      return this.favItems.reduce((acc, item) => acc + item.quantity, 0);
-    },
-  },
-  methods: {
-    toggleBar() {
-      this.showBar = !this.showBar;
-    },
-    toggleBagtip() {
-      this.showBagtip = !this.showBagtip;
-    },
-    togglefavtip() {
-      this.showFavtip = !this.showFavtip;
-    },
-    toggletooltip() {
-      this.showTooltip = !this.showTooltip;
-    },
-    closeTab() {
-      this.activeTab = "";
-    },
-    ToggleSignup() {
-      this.activeTab = "SignUp";
-    },
-    ToggleLogin() {
-      this.activeTab = "Login";
-    },
-    addToCart(item) {
-      if (!item.size) {
-        console.log("Please select a size.");
-        return;
-      }
-      const index = this.cartItems.findIndex(
-        (cartItem) => cartItem.id === item.id && cartItem.size === item.size
-      );
-      if (index !== -1) {
-        // Item already exists in cart
-        this.cartItems[index].quantity += 1;
-      } else {
-        // Item is new to the cart
-        this.cartItems.push({
-          ...item,
-          quantity: 1,
-        });
-      }
-    },
-    removeFromCart(item) {
-      const index = this.cartItems.findIndex(
-        (cartItem) => cartItem.id === item.id && cartItem.size === item.size
-      );
-      if (index !== -1) {
-        const cartItem = this.cartItems[index];
-        if (cartItem.quantity > 1) {
-          // Decrease quantity by 1
-          cartItem.quantity--;
-        } else {
-          // Remove item from cart
-          this.cartItems.splice(index, 1);
-          // Decrease quantity by 1
-          cartItem.quantity--;
-        }
-      }
-    },
-    addToFav(item) {
-      const index = this.favItems.findIndex(
-        (favItems) => favItems.id === item.id
-      );
-      if (index !== -1) {
-        // Item already exists in cart
-        this.favItems == this.favItems;
-      } else {
-        // Item is new to the cart
-        this.favItems.push({
-          ...item,
-        });
-      }
-    },
-    removeFromFav(item) {
-      //recognise which item
-      const index = this.favItems.findIndex(
-        (favItem) => favItem.id === item.id
-      );
-      //delete item
-      this.favItems.splice(index, 1);
-    },
-    order() {
-      console.log(this.totalItems);
-      if (this.totalItems === 0) {
-        // show message that shopping cart is empty
-        console.log("Your shopping cart is empty.");
-        this.showTooltip = true;
-        // hide the tooltip after 3 seconds
-        setTimeout(() => {
-          this.showTooltip = false;
-        }, 5000);
-      } else {
-        // check if buyer is logged in
-        this.activeTab = "SignUp";
-        console.log("you need to log in");
-      }
-    },
-  },
+const showBar = ref(false);
+const showBagtip = ref(false);
+const showFavtip = ref(false);
+const showShoppings = ref(false);
+const showFav = ref(false);
+const showTooltip = ref(false);
+const showLogin = ref(false);
+const showSignUp = ref(false);
+
+const cartItems = ref([]);
+const favItems = ref([]);
+
+const totalItems = computed(() =>
+  cartItems.value.reduce((acc, item) => acc + item.quantity, 0)
+);
+
+const toggleBar = () => {
+  showBar.value = !showBar.value;
+};
+
+const order = () => {
+  console.log(totalItems.value);
+  if (totalItems.value === 0) {
+    console.log("Your shopping cart is empty.");
+    showTooltip.value = true;
+    setTimeout(() => {
+      showTooltip.value = false;
+    }, 5000);
+  } else {
+    activeTab.value = "SignUp";
+    console.log("you need to log in");
+  }
+};
+
+const addToCart = (item) => {
+  if (!item.size) {
+    console.log("Please select a size.");
+    return;
+  }
+  const index = cartItems.value.findIndex(
+    (cartItem) => cartItem.id === item.id && cartItem.size === item.size
+  );
+  if (index !== -1) {
+    cartItems.value[index].quantity += 1;
+  } else {
+    cartItems.value.push({ ...item, quantity: 1 });
+  }
+};
+
+const removeFromCart = (item) => {
+  const index = cartItems.value.findIndex(
+    (cartItem) => cartItem.id === item.id && cartItem.size === item.size
+  );
+  if (index !== -1) {
+    const cartItem = cartItems.value[index];
+    if (cartItem.quantity > 1) {
+      cartItem.quantity--;
+    } else {
+      cartItems.value.splice(index, 1);
+    }
+  }
+};
+
+const addToFav = (item) => {
+  const index = favItems.value.findIndex((favItem) => favItem.id === item.id);
+  if (index === -1) {
+    favItems.value.push({ ...item });
+  }
+};
+
+const removeFromFav = (item) => {
+  const index = favItems.value.findIndex((favItem) => favItem.id === item.id);
+  favItems.value.splice(index, 1);
 };
 </script>
