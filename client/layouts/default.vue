@@ -144,12 +144,12 @@
       <SignUp
         v-if="showSignUp"
         @close="showSignUp=false"
-        @toggle-login="showLogin = true ; showSignUp = false"
+        @toggle-login="toggleLogin"
       />
       <Login
         v-if="showLogin"
         @close="showLogin = false"
-        @toggle-signup="showSignUp = true ; showLogin = false"
+        @toggle-signup="toggleSignUp"
       />
       <ShoppingBag
         v-if="showShoppings"
@@ -188,6 +188,16 @@ const showSignUp = ref(false);
 
 const cartItems = ref([]);
 const favItems = ref([]);
+
+const toggleLogin = () => {
+  showLogin.value = true;
+  showSignUp.value = false;
+}
+
+const toggleSignUp = () => {
+  showSignUp.value = true;
+  showLogin.value = false;
+}
 
 const totalItems = computed(() =>
   cartItems.value.reduce((acc, item) => acc + item.quantity, 0)
