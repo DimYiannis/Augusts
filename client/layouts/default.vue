@@ -174,8 +174,9 @@
   <slot />
 </template>
 <script setup>
+import axios from "axios";
 import { ref, computed } from "vue";
-import { Login, SignUp } from "#components";
+
 
 const showBar = ref(false);
 const showBagtip = ref(false);
