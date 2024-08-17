@@ -1,7 +1,7 @@
 <template>
-  <div class="backdrop" @click.self="closeLogin">
+  <div class="invbackdrop" @click.self="closeLogin">
     <div
-      class="p-1 rounded-lg object-center z-10 mt-8 relative pt-3 top-4 appearance-none bg-white tablet:w-fit tablet:h-fit place-self-center w-screen h-fit"
+      class="p-1 rounded-lg object-center z-10 mt-8 relative pt-3 top-4  bg-white tablet:w-fit tablet:h-fit place-self-center w-screen h-fit"
     >
       <div class="flex justify-end p-3 h-10">
         <button class="flex w-fit rounded-3xl p-2" @click="closeLogin">
