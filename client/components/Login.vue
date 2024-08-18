@@ -72,6 +72,7 @@ export default {
   methods: {
     login() {
       const userStore = useUserStore();
+ 
       axios
         .post(
           "http://localhost:5000/api/v1/auth/login",
@@ -86,10 +87,8 @@ export default {
           console.log(response);
           console.log(response.data.user);
           alert("Welcome back!");
-
-          userStore.login();  // Update the store state
-
-          closeLogin();
+          userStore.login();
+          this.closeLogin();        
         })
         .catch((error) => {
           console.error("Registration error:", error);
