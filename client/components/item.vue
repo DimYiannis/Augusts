@@ -65,22 +65,19 @@ export default {
     chosenSize: '',
     sizes: [   
         {
-          id:'XSmall',
+          id:'S',
         },
         {
-          id:'Small',
+          id:'M',
         },
         {
-          id:'Medium',
+          id:'L',           
         },
         {
-          id:'Large',           
-        },
-        {
-          id:'XLarge',                
+          id:'XL',                
         }, 
         {
-          id:'2XLarge',                        
+          id:'XXL',                        
         },    
       ],
     }
