@@ -45,37 +45,28 @@
 
 <script>
 import axios from "axios";
+import { useModalsStore } from '../stores/myStore';
+
 export default {
   data() {
     return {
       name: "",
       email: "",
       password: "",
-      terms: false,
       passwordError: "",
     };
   },
   methods: {
-    handleSubmit() {
-      //validate password
-      this.passwordError =
-        this.password.length >= 12
-          ? ""
-          : "Password must be at least 12 characters long";
-      if (!this.passwordError) {
-        console.log("email: ", this.email);
-        console.log("password: ", this.password);
-        console.log("terms accepted: ", this.terms);
-      }
-    },
     ToggleLogin() {
-      this.$emit("toggle-login");
+      const modalStore = useModalsStore(); 
+      modalStore.toggleLogin();
     },
     register() {
       axios
         .post(
           "http://localhost:5000/api/v1/auth/register",
           {
+            name: this.name,
             email: this.email,
             password: this.password,
           },
@@ -85,10 +76,10 @@ export default {
         .then((response) => {
           console.log(response);
           console.log(response.data.user);
-          alert("Welcome back!");
-
+          alert("Welcome at August's!");
+          this.$emit("logged-in");
           //redirect to dashboard page.
-          this.$router.push({ name: "default" });
+          this.$router.push("/");
         })
         .catch((error) => {
           console.error("Registration error:", error);
@@ -102,9 +93,6 @@ export default {
             this.showError = false;
           }, 5000);
         })
-        .finally(() => {
-          this.loading = false; // Set loading to false when the request is completed
-        });
     },
   },
 };

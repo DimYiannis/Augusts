@@ -13,11 +13,13 @@
 </template>
 
 <script>
+import { useModalsStore } from '../stores/myStore';
 export default {
 
     methods: {
         closeTip() {
-            this.$emit('close-tip');
+            const modalStore = useModalsStore(); 
+            modalStore.showTooltip=false;
         },
     }
 }

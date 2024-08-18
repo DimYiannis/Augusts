@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import { useModalsStore } from '../stores/myStore';
+
 export default {
   props: {
     favItems: {
@@ -99,7 +101,8 @@ export default {
       this.$emit('remove-from-fav', item);
     },
     closeFav() {
-      this.$emit('close-fav')
+      const modalStore = useModalsStore(); 
+      modalStore.showFav=false;
     },
     addToCart(item) {
       this.$emit('add-to-cart', item);

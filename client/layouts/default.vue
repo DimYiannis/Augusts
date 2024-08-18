@@ -6,7 +6,7 @@
     </div>
 
     <!--Sign Up-->
-    <button @click="showSignUp=true" class="headerbtn">
+    <button v-if="!userStore.isLoggedIn" @click="modalStore.showSignUp=true" class="headerbtn">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
@@ -20,27 +20,52 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="32"
-          d="M344 144c-3.92 52.87-44 96-88 
-            96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96Z"
+          d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96Z"
         />
         <path
           fill="none"
           stroke="currentColor"
           stroke-miterlimit="10"
           stroke-width="32"
-          d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 
-            453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 
-            352 343 304 256 304Z"
+          d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304Z"
+        />
+      </svg>
+    </button>
+
+    <!--User tab-->
+    <button v-if="userStore.isLoggedIn" @click="modalStore.showLogout = true" class="headerbtn">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 512 512"
+        class="headersvg"
+      >
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="32"
+          d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96Z"
+        />
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-miterlimit="10"
+          stroke-width="32"
+          d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304Z"
         />
       </svg>
     </button>
 
     <!--favorites-->
     <button
+      v-if="userStore.isLoggedIn"
       @mouseenter="showFavtip = true"
       @mouseleave="showFavtip = false"
       class="headerbtn"
-      @click="showFav = 'true'"
+      @click="modalStore.showFav = 'true'"
     >
       <h1 v-if="showFavtip" class="tooltip">Favorites</h1>
 
@@ -68,12 +93,13 @@
     <!--i placed the mouseenter = false 
         so that the bars wont get confused-->
     <div
+      v-if="userStore.isLoggedIn"
       @mouseenter="showBar = false"
       @mouseover="showBagtip = true"
       @mouseleave="showBagtip = false"
       class="shoppingbag"
     >
-      <button class="headerbtn" @click="showShoppings = true">
+      <button class="headerbtn" @click="modalStore.showCart = true">
         <!--conditional rendering in order to describe what 
                 the icon is 'like a tooltip short of speak'-->
         <h1 v-if="showBagtip" class="tooltip">Shopping Bag</h1>
@@ -89,15 +115,7 @@
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M15.75 10.5V6a3.75 3.75 0 10-7.5 
-                    0v4.5m11.356-1.993l1.263 12c.07.665-.45 
-                    1.243-1.119 1.243H4.25a1.125 1.125 0 
-                    01-1.12-1.243l1.264-12A1.125 1.125 0 
-                    015.513 7.5h12.974c.576 0 1.059.435 
-                    1.119 1.007zM8.625 10.5a.375.375 0 
-                    11-.75 0 .375.375 0 01.75 0zm7.5 
-                    0a.375.375 0 11-.75 0 .375.375 0 01.75 
-                    0z"
+              d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
             />
           </svg>
           <!--badge-->
@@ -142,63 +160,72 @@
     <!-- Teleported Components -->
     <Teleport to="body">
       <SignUp
-        v-if="showSignUp"
-        @close="showSignUp=false"
-        @toggle-login="toggleLogin"
+        v-if="modalStore.showSignUp"
+      />
+      <Logout
+        v-if="modalStore.showLogout"
       />
       <Login
-        v-if="showLogin"
-        @close="showLogin = false"
-        @toggle-signup="toggleSignUp"
+        v-if="modalStore.showLogin"
       />
       <ShoppingBag
-        v-if="showShoppings"
+        v-if="modalStore.showCart"
         :cart-items="cartItems"
         @order="order"
         @add-to-cart="addToCart"
         @remove-from-cart="removeFromCart"
-        @close-cart="showShoppings = false"
       />
       <Favorites
-        v-if="showFav"
+        v-if="modalStore.showFav"
         :fav-items="favItems"
         @add-to-fav="addToFav"
         @remove-from-fav="removeFromFav"
-        @close-fav="showFav = false"
         @add-to-cart="addToCart"
       />
-      <Tooltip v-if="showTooltip" @close="showTooltip = false" />
+      <Tooltip v-if="modalStore.showTooltip"/>
     </Teleport>
   </header>
 
   <slot />
 </template>
 <script setup>
+import { useUserStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/myStore';
 import axios from "axios";
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 
+const userStore = useUserStore(); // Access the Pinia store
+const modalStore = useModalsStore(); 
 
 const showBar = ref(false);
 const showBagtip = ref(false);
 const showFavtip = ref(false);
-const showShoppings = ref(false);
-const showFav = ref(false);
 const showTooltip = ref(false);
-const showLogin = ref(false);
-const showSignUp = ref(false);
+ 
 
 const cartItems = ref([]);
 const favItems = ref([]);
 
 const toggleLogin = () => {
-  showLogin.value = true;
-  showSignUp.value = false;
-}
+  modalStore.toggleLogin();
+};
 
 const toggleSignUp = () => {
-  showSignUp.value = true;
-  showLogin.value = false;
+  modalStore.toggleSignUp();
+};
+
+const toggleLogout = () => {
+ modalStore.toggleLogout();
 }
+
+const loggedin = () => {
+  userStore.login(); // Update the store state
+};
+
+const logout = () => {
+  userStore.logout();
+};
 
 const totalItems = computed(() =>
   cartItems.value.reduce((acc, item) => acc + item.quantity, 0)
@@ -212,9 +239,9 @@ const order = () => {
   console.log(totalItems.value);
   if (totalItems.value === 0) {
     console.log("Your shopping cart is empty.");
-    showTooltip.value = true;
+    modalStore.showTooltip= true;
     setTimeout(() => {
-      showTooltip.value = false;
+      modalStore.showTooltip=false;
     }, 5000);
   } else {
     activeTab.value = "SignUp";

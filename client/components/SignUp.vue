@@ -115,7 +115,8 @@
                     </button>
                 </div>
 
-                <TheForm @toggle-login="ToggleLogin"/>
+                <TheForm @toggle-login="ToggleLogin"
+                @logged-in="loggedin"/>
 
             </div>
             
@@ -124,10 +125,9 @@
 </template>
 
 <script>
-import TheForm from './TheForm.vue'
+import { useModalsStore } from '../stores/myStore';
 
 export default {
-    components: {TheForm},
     data() {
         return {
           
@@ -135,11 +135,13 @@ export default {
     },
     methods: {
         closeSignup() {
-            this.$emit('close')
+            const modalStore = useModalsStore(); 
+            modalStore.showSignUp=false;
         },
         ToggleLogin() {
-            this.$emit('toggle-login')
-        }
+            const modalStore = useModalsStore(); 
+            modalStore.toggleLogin();
+        },
     }, 
     
 }

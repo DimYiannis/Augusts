@@ -22,7 +22,7 @@
         </button>
       </div>
 
-      <form class="mb-6">
+      <form @submit.prevent="login" class="mb-6">
         <h1 class="heading-4 mb-3 text-2xl font-bold">Log in</h1>
         <h2 class="mb-1 font-semibold">
           Log in to access your dashboard.
@@ -56,6 +56,9 @@
 </template>
 
 <script>
+import { useUserStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/myStore';
+
 import axios from "axios";
 export default {
   data() {
@@ -68,8 +71,7 @@ export default {
 
   methods: {
     login() {
-      this.loading = true;
-
+      const userStore = useUserStore();
       axios
         .post(
           "http://localhost:5000/api/v1/auth/login",
@@ -85,8 +87,9 @@ export default {
           console.log(response.data.user);
           alert("Welcome back!");
 
-          //redirect to dashboard page.
-          this.$router.push({ name: "default" });
+          userStore.login();  // Update the store state
+
+          closeLogin();
         })
         .catch((error) => {
           console.error("Registration error:", error);
@@ -100,16 +103,15 @@ export default {
             this.showError = false;
           }, 5000);
         })
-        .finally(() => {
-          this.loading = false; // Set loading to false when the request is completed
-        });
     },
 
     closeLogin() {
-      this.$emit("close");
+      const modalStore = useModalsStore(); 
+      modalStore.showLogin=false;
     },
     ToggleSignup() {
-      this.$emit("toggle-signup");
+      const modalStore = useModalsStore(); 
+      modalStore.toggleSignUp();
     },
   },
 };

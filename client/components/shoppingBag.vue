@@ -96,6 +96,8 @@
 </template>
 
 <script>
+import { useModalsStore } from '../stores/myStore';
+
 export default {
   props: {
     cartItems: {
@@ -122,7 +124,8 @@ export default {
       this.$emit('remove-from-cart', item);
     },
     closeCart() {
-      this.$emit('close-cart');
+      const modalStore = useModalsStore(); 
+      modalStore.showCart=false;
     },
     order() {
       this.$emit('order')
