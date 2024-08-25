@@ -1,19 +1,28 @@
 // stores/myStore.js
 import { defineStore } from "pinia";
+import axios from 'axios';
 import { piniaPersistConfig } from './piniaPersistConfig';
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    isLoggedIn: "false",
+    isLoggedIn: false,
+    user: null,
   }),
   actions: {
-    login() {
-      // Simulate a login action
-      this.isLoggedIn = true;
-      // You can also perform API calls here
+    async login() {
+      try {
+        this.isLoggedIn = true;
+        // Fetch user data after login
+        const response = await axios.get('http://localhost:5000/api/v1/users/showUser');
+        console.log(response.data);
+        this.user = response.data;  // Store user data in the state
+      } catch (error) {
+        console.error('Error fetching user information:', error);
+      }
     },
     logout() {
       this.isLoggedIn = false;
+      this.user = null;
     },
   },
   persist: piniaPersistConfig('userStore'),
@@ -21,12 +30,12 @@ export const useUserStore = defineStore("user", {
 
 export const useModalsStore = defineStore("modal", {
   state: () => ({
-    showLogin: "false",
-    showSignUp: "false",
-    showLogout: "false",
-    showFav: "false",
-    showCart: "false",
-    showTooltip: "false",
+    showLogin: false,
+    showSignUp: false,
+    showLogout: false,
+    showFav: false,
+    showCart: false,
+    showTooltip: false,
   }),
   actions: {
     toggleLogin() {

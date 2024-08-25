@@ -297,3 +297,7 @@ select {
   mt-[10px]
   font-bold;
 }
+/*logout*/
+.btn {
+  @apply m-3 flex flex-col items-center;
+}

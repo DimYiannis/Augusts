@@ -201,7 +201,6 @@ const modalStore = useModalsStore();
 const showBar = ref(false);
 const showBagtip = ref(false);
 const showFavtip = ref(false);
-const showTooltip = ref(false);
  
 
 const cartItems = ref([]);
@@ -289,4 +288,5 @@ const removeFromFav = (item) => {
   const index = favItems.value.findIndex((favItem) => favItem.id === item.id);
   favItems.value.splice(index, 1);
 };
+
 </script>
