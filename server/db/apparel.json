@@ -1,0 +1,51 @@
+{
+  "jackets": [
+    {
+      "name": "Bronze Jacket",
+      "price": 60,
+      "image": "https://images.unsplash.com/photo-1626307416562-ee839676f5fc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+      "size": null
+    },
+    {
+      "name": "Red Jacket",
+      "price": 60,
+      "image": "https://images.unsplash.com/photo-1608113562252-b320e7628e17?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
+      "size": null
+    }
+  ],
+  "accessories": [
+    {
+      "name": "White Cap",
+      "price": 10,
+      "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80",
+      "quantity": 0
+    },
+    {
+      "name": "Grey Beanie",
+      "price": 10,
+      "description": "This is item 3",
+      "image": "https://images.unsplash.com/photo-1618354691792-d1d42acfd860?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80",
+      "quantity": 0
+    },
+    {
+      "name": "Wooden Bracelet",
+      "price": 7,
+      "image": "https://images.unsplash.com/photo-1632670549453-7a3dfac254a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+      "quantity": 0
+    }
+  ],
+  "shoes": [
+    {
+      "name": "Brown Boots",
+      "price": 60,
+      "image": "https://images.unsplash.com/photo-1542838776-096d877b5aa2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "size": null
+    },
+    {
+      "name": "Black Boots",
+      "price": 70,
+      "image": "https://images.unsplash.com/photo-1581803274516-209c2e3c1472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "size": null
+    }
+  ]
+}

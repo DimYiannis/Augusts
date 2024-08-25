@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Loose Jean",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1636016954413-44070ee44f8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    "size": null
+  },
+  {
+    "name": "Tight Jean",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1599030337145-5bec28bee393?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    "size": null
+  },
+  {
+    "name": "Ripped Jean",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1602479503323-4b7e5068a883?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=841&q=80",
+    "size": null
+  },
+  {
+    "name": "Ecru Straight Jean",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+    "size": null
+  },
+  {
+    "name": "Black Straight Jean",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1584864783592-f1d6d4fcd1d0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
+    "size": null
+  },
+  {
+    "name": "Straight Ripped Jean",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1516826957135-700dedea698c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+    "size": null
+  },
+  {
+    "name": "Black Ripped Jean",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1623629225725-23a723fd5bd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
+    "size": null
+  }
+]
