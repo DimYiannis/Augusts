@@ -1,28 +1,55 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
+const SingleOrderItemSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  image: { type: String, required: true },
+  price: { type: Number, required: true },
+  amount: { type: Number, required: true },
+  product: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Product',
+    required: true,
+  },
+});
 
 const OrderSchema = mongoose.Schema(
   {
+    tax: {
+      type: Number,
+      required: true,
+    },
+    shippingFee: {
+      type: Number,
+      required: true,
+    },
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+    total: {
+      type: Number,
+      required: true,
+    },
+    orderItems: [SingleOrderItemSchema],
+    status: {
+      type: String,
+      enum: ['pending', 'failed', 'paid', 'delivered', 'canceled'],
+      default: 'pending',
+    },
     user: {
       type: mongoose.Schema.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
-    product: {
-      type: mongoose.Schema.ObjectId,
-      required: true,
-      refPath: 'productType', // dynamic reference based on productType
-
-    },
-    productType: {
+    clientSecret: {
       type: String,
       required: true,
-      enum: ['Sweats', 'Bottoms', 'Shirts','Accessories', 'Shoes', 'Jackets'] // product model names 
-    }
+    },
+    paymentIntentId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-//  uniqueness based on user and post
-OrderSchema.index({ user: 1, product: 1, productType: 1 }, { unique: true });
-
-module.exports = mongoose.model("Order", OrderSchema);
+module.exports = mongoose.model('Order', OrderSchema);
