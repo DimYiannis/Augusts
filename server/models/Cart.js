@@ -17,8 +17,16 @@ const CartSchema = mongoose.Schema(
       type: String,
       required: true,
       enum: ['Sweats', 'Bottoms', 'Shirts','Accessories', 'Shoes', 'Jackets'] // product model names 
-    }
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+      default: 1
+    },
+    deletedAt: { type: Date, default: null },
   },
+  
   { timestamps: true }
 );
 
