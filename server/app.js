@@ -30,6 +30,7 @@ const bottomsRouter = require("./routes/bottomsRoutes");
 const apparelRouter = require("./routes/apparelRoutes");
 const likesRouter = require('./routes/likesRoutes');
 const cartRouter = require('./routes/cartRoutes');
+const orderRouter = require('./routes/ordersRoutes');
 
 //middleware
 const notFoundMiddleware = require("./middleware/not-found");
@@ -89,8 +90,9 @@ app.use("/api/v1/sweats", sweatsRouter);
 app.use("/api/v1/shirts", shirtsRouter);
 app.use("/api/v1/bottoms", bottomsRouter);
 app.use("/api/v1/apparel", apparelRouter);
-app.use("/api/v1/likes", likesRouter)
-app.use("/api/v1/cart", cartRouter)
+app.use("/api/v1/likes", likesRouter);
+app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/orders", orderRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
