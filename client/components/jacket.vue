@@ -57,6 +57,9 @@
 </template>
 
 <script>
+import { useCartStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/myStore';
+
 export default {
   data() {
     return {
@@ -90,12 +93,14 @@ props: {
 methods: {
   addToCart(jacket) {
     console.log('addToCart called with item:', jacket);
-    jacket.size = this.chosenSize
-    this.$emit('add-to-cart', jacket);
+    jacket.size = this.chosenSize;
+    const cartStore = useCartStore();
+    cartStore.addToCart(jacket);
   },
   addToFav(jacket) {
     jacket.size = this.chosenSize
-    this.$emit('add-to-fav', jacket);
+    const modalStore = useModalsStore();
+    modalStore.addToFav(jacket)
   }
 }
 };

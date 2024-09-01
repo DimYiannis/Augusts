@@ -32,6 +32,8 @@
                   
                 </div>
                 <div v-else>
+                  <!-- loading state -->
+                  <LoadSpinner v-if="isFetchingCart || isRemovingFromCart" />
                   <div class="flex gap-8" v-for="(item, index) in cartItems" :key="index">
                     <img :src="item.image" :alt="item.name"
                     class="imgshop">
@@ -44,7 +46,7 @@
                       <div class="text-red-500 font-bold text-lg">price: {{ item.price }}$</div>
             
                     <div class="flex gap-1">
-                      <button class="btnmodal" @click="removeFromCart(item)">
+                      <button class="btnmodal" @click="removeCartItem(item.id)" :disabled="isRemovingFromCart">
                         <div v-if="item.quantity==1">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           width="20" height="20" viewBox="0 0 24 24">
@@ -86,7 +88,7 @@
               <div class="total-price">Total Price: {{ totalPrice }}$</div>
 
               <button @click="order"
-               class="costbtn">
+               class="costbtn" :disabled="isOrdering">
                 Order
               </button>
             </div>
@@ -96,41 +98,43 @@
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue';
+import { useCartStore } from '../stores/myStore';
 import { useModalsStore } from '../stores/myStore';
 
+
 export default {
-  props: {
-    cartItems: {
-      type: Array,
-      required: true
-    },
-    
-  },
-  computed: {
-    totalItems() {
-      console.log(this.cartItems)
-      return this.cartItems.reduce((acc, item) => acc + item.quantity, 0);
-      
-    },
-    totalPrice() {
-      return this.cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    }
-  },
-  methods: {
-    addToCart(item,) {
-      this.$emit('add-to-cart', item);
-    },
-    removeFromCart(item) {
-      this.$emit('remove-from-cart', item);
-    },
-    closeCart() {
-      const modalStore = useModalsStore(); 
-      modalStore.showCart=false;
-    },
-    order() {
-      this.$emit('order')
-    },
+  setup() {
+    const cartStore = useCartStore();
+    const modalStore = useModalsStore();
+
+    // Using computed to get reactive values from store
+    const totalItems = computed(() => cartStore.totalItems);
+    const totalPrice = computed(() => cartStore.totalPrice);
+
+    // Fetch cart items when the component is mounted
+    onMounted(async () => {
+      try {
+        await cartStore.fetchCartItems();
+      } catch (error) {
+        console.error("Failed to fetch cart items:", error);
+      }
+    });
+
+    return {
+      totalItems,
+      totalPrice,
+      cartItems: cartStore.cartItems,
+      isOrdering: cartStore.isOrdering,
+      isFetchingCart: cartStore.isFetchingCart,
+      isRemovingFromCart: cartStore.isRemovingFromCart,
+      order: cartStore.order,
+      addToCart: cartStore.addToCart,
+      removeCartItem: cartStore.removeCartItem,
+      closeCart() {
+        modalStore.$patch({ showCart: false });
+      },
+    };
   },
 };
 </script>
-

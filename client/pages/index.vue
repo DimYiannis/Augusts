@@ -1,4 +1,5 @@
 <template>
+   
      <!--entry Section Start-->
    <section id="entry" class="section">
         <img src="../assets/nonchal2.jpg" class="section_img">
@@ -48,6 +49,8 @@
 </template>
 
 <script>
+import { useUserStore } from '../stores/myStore';
+
 export default {
     data() {
         return {   

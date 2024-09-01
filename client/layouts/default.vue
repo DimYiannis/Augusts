@@ -6,7 +6,7 @@
     </div>
 
     <!--Sign Up-->
-    <button v-if="!userStore.isLoggedIn" @click="modalStore.showSignUp=true" class="headerbtn">
+    <button v-if="!userStore.isLoggedIn" @click="toggleSignUp" class="headerbtn">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
@@ -33,7 +33,7 @@
     </button>
 
     <!--User tab-->
-    <button v-if="userStore.isLoggedIn" @click="modalStore.showLogout = true" class="headerbtn">
+    <button v-if="userStore.isLoggedIn" @click="toggleLogout" class="headerbtn">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
@@ -65,7 +65,7 @@
       @mouseenter="showFavtip = true"
       @mouseleave="showFavtip = false"
       class="headerbtn"
-      @click="modalStore.showFav = 'true'"
+      @click="toggleFav"
     >
       <h1 v-if="showFavtip" class="tooltip">Favorites</h1>
 
@@ -99,7 +99,7 @@
       @mouseleave="showBagtip = false"
       class="shoppingbag"
     >
-      <button class="headerbtn" @click="modalStore.showCart = true">
+      <button class="headerbtn" @click="toggleCart">
         <!--conditional rendering in order to describe what 
                 the icon is 'like a tooltip short of speak'-->
         <h1 v-if="showBagtip" class="tooltip">Shopping Bag</h1>
@@ -120,10 +120,10 @@
           </svg>
           <!--badge-->
           <div
-            v-show="totalItems > 0"
+            v-show="cartStore.totalItems > 0"
             class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-black/70 rounded-full"
           >
-            {{ totalItems }}
+            {{ cartStore.totalItems }}
           </div>
         </h1>
       </button>
@@ -170,17 +170,9 @@
       />
       <ShoppingBag
         v-if="modalStore.showCart"
-        :cart-items="cartItems"
-        @order="order"
-        @add-to-cart="addToCart"
-        @remove-from-cart="removeFromCart"
       />
       <Favorites
         v-if="modalStore.showFav"
-        :fav-items="favItems"
-        @add-to-fav="addToFav"
-        @remove-from-fav="removeFromFav"
-        @add-to-cart="addToCart"
       />
       <Tooltip v-if="modalStore.showTooltip"/>
     </Teleport>
@@ -191,12 +183,14 @@
 <script setup>
 import { useUserStore } from '../stores/myStore';
 import { useModalsStore } from '../stores/myStore';
+import { useCartStore } from '../stores/myStore';
 import axios from "axios";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
 const userStore = useUserStore(); // Access the Pinia store
 const modalStore = useModalsStore(); 
+const cartStore = useCartStore(); 
 
 const showBar = ref(false);
 const showBagtip = ref(false);
@@ -215,8 +209,16 @@ const toggleSignUp = () => {
 };
 
 const toggleLogout = () => {
- modalStore.toggleLogout();
-}
+  modalStore.toggleLogout();
+};
+
+const toggleFav = () => {
+  modalStore.toggleFav();
+};
+
+const toggleCart = () => {
+  modalStore.toggleCart();
+};
 
 const loggedin = () => {
   userStore.login(); // Update the store state
@@ -226,67 +228,7 @@ const logout = () => {
   userStore.logout();
 };
 
-const totalItems = computed(() =>
-  cartItems.value.reduce((acc, item) => acc + item.quantity, 0)
-);
-
 const toggleBar = () => {
   showBar.value = !showBar.value;
 };
-
-const order = () => {
-  console.log(totalItems.value);
-  if (totalItems.value === 0) {
-    console.log("Your shopping cart is empty.");
-    modalStore.showTooltip= true;
-    setTimeout(() => {
-      modalStore.showTooltip=false;
-    }, 5000);
-  } else {
-    activeTab.value = "SignUp";
-    console.log("you need to log in");
-  }
-};
-
-const addToCart = (item) => {
-  if (!item.size) {
-    console.log("Please select a size.");
-    return;
-  }
-  const index = cartItems.value.findIndex(
-    (cartItem) => cartItem.id === item.id && cartItem.size === item.size
-  );
-  if (index !== -1) {
-    cartItems.value[index].quantity += 1;
-  } else {
-    cartItems.value.push({ ...item, quantity: 1 });
-  }
-};
-
-const removeFromCart = (item) => {
-  const index = cartItems.value.findIndex(
-    (cartItem) => cartItem.id === item.id && cartItem.size === item.size
-  );
-  if (index !== -1) {
-    const cartItem = cartItems.value[index];
-    if (cartItem.quantity > 1) {
-      cartItem.quantity--;
-    } else {
-      cartItems.value.splice(index, 1);
-    }
-  }
-};
-
-const addToFav = (item) => {
-  const index = favItems.value.findIndex((favItem) => favItem.id === item.id);
-  if (index === -1) {
-    favItems.value.push({ ...item });
-  }
-};
-
-const removeFromFav = (item) => {
-  const index = favItems.value.findIndex((favItem) => favItem.id === item.id);
-  favItems.value.splice(index, 1);
-};
-
 </script>

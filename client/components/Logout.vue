@@ -12,7 +12,7 @@
                 
                 <div class="flex justify-end h-10">
                     <div class="grid">
-                        <h2 class="text-white">Welcome, {{ userStore.user  }}</h2>
+                        <h2 class="text-white">Welcome, {{  userStore.user.name || 'Guest' }}</h2>
                         <h3></h3>
                     </div>
                     <button class="flex w-fit rounded-3xl p-2" 
@@ -104,43 +104,37 @@ import axios from "axios";
 import { useModalsStore } from '../stores/myStore';
 import { useUserStore } from '../stores/myStore';
 
+
 export default {
-    data() {
-        return {
-          
-        }
-    },
-    methods: {
-        async logout() {
-            const userStore = useUserStore();
-      try {
-        const response = 
-        await axios.get("http://localhost:5000/api/v1/auth/logout", {
-          withCredentials: true,
-        })
-          
-        console.log(response);
+    setup() {
+        const userStore = useUserStore();
+        const modalStore = useModalsStore();
 
-        userStore.logout();
-        this.closeLogout();
+        const logout = async () => {
+            try {
+                const response = await axios.get("http://localhost:5000/api/v1/auth/logout", {
+                    withCredentials: true,
+                });
+                console.log(response);
 
-        this.$router.push("/");
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    },
-        closeLogout() {
-            const modalStore = useModalsStore();
+                userStore.logout();
+                closeLogout();
+                this.$router.push("/");
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+
+        const closeLogout = () => {
             modalStore.toggleLogout();
-        },
-        ToggleLogin() {
-            const modalStore = useModalsStore();
-            modalStore.toggleLogin();
-        },
-    }, 
-    
+        };
+
+        return {
+            userStore,
+            logout,
+            closeLogout
+        };
+    }
 }
-
-
 </script>
 

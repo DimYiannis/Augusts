@@ -24,6 +24,8 @@
 
 <script>
   import axios from "axios";
+  import { useCartStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/myStore';
 
   export default {
   data() {
@@ -58,11 +60,13 @@
     },
     addToCart(item) {
       console.log('addToCart called with item:', item)
-      this.$emit('add-to-cart', item);
+      const cartStore = useCartStore();
+      cartStore.addToCart(item);
 
     },
     addToFav(item) {
-      this.$emit('add-to-fav', item);
+      const modalStore = useModalsStore();
+      modalStore.addToFav(item)
     },
 
   }

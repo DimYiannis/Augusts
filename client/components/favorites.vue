@@ -29,6 +29,8 @@
                   
                     </div>
                     <div v-else>
+                      <!-- loading state -->
+                      <LoadSpinner v-if="isFetchingFav || isRemovingFromFav" />
                       <div class="flex gap-8 ml-4" v-for="(item, index) in favItems" :key="index">
                         <img :src="item.image" :alt="item.name"
                         class="imgshop">
@@ -68,10 +70,7 @@
                  
                 </div>
             </div>
-               
-
-                
-            
+                      
           </div>
             
         </div>
@@ -79,36 +78,63 @@
 </template>
 
 <script>
+import { computed, onMounted } from 'vue';
 import { useModalsStore } from '../stores/myStore';
+import { useCartStore } from '../stores/myStore';
 
 export default {
-  props: {
-    favItems: {
-      type: Array,
-      required: true
-    }
-  },
-  
-  totalFav() {
-    return this.favItems.reduce((acc, item) => acc + item.quantity, 0);
-  },
+  setup() {
+    const modalStore = useModalsStore();
+    const cartStore = useCartStore();
 
-  methods: {
-    addToFav(item) {
-      this.$emit('add-to-fav', item);
-    },
-    removeFromFav(item) {
-      this.$emit('remove-from-fav', item);
-    },
-    closeFav() {
-      const modalStore = useModalsStore(); 
-      modalStore.showFav=false;
-    },
-    addToCart(item) {
-      this.$emit('add-to-cart', item);
-    },
-  }
+     // Fetch fav items when the component is mounted
+     onMounted(async () => {
+      try {
+        await modalStore.fetchFavItems();
+      } catch (error) {
+        console.error("Failed to fetch fav items:", error);
+      }
+    });
+    
+    // Computed property to get favorite items from the store
+    const favItems = computed(() => modalStore.favItems);
+    
+    // Method to close the favorite modal
+    const closeFav = () => {
+      modalStore.showFav = false;
+    };
+
+    // Method to remove an item from favorites
+    const removeFromFav = async (item) => {
+      try {
+        await modalStore.removeFromFav(item);
+      } catch (error) {
+        console.error("Failed to remove item from favorites:", error);
+      }
+    };
+
+
+    // Method to add an item to the cart
+    const addToCart = async (item) => {
+      item.size = item.size || '';  // Ensure item has size
+      try {
+        await cartStore.addToCart(item);
+      } catch (error) {
+        console.error("Failed to add item to cart:", error);
+      }
+    };
+
+    return {
+      favItems,
+      closeFav,
+      removeFromFav,
+      addToCart,
+      isFetchingFav: computed(() => modalStore.isFetchingFav),
+      isRemovingFromFav: computed(() => modalStore.isRemovingFromFav),
+      addToFav: modalStore.addToFav,
+    };
+  },
 };
-
 </script>
+
 

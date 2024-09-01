@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import { useCartStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/myStore';
     export default {
         data() {
             return {
@@ -93,13 +95,14 @@
             addToCart(shoe) {
                 shoe.size = this.chosenSize
                 console.log('addToCart called with item:', shoe, 'and size:', shoe.size)
-
-                this.$emit('add-to-cart', shoe)
+                const cartStore = useCartStore();
+                cartStore.addToCart(shoe);
             },
             
             addToFav(shoe) {
                 shoe.size = this.chosenSize
-                this.$emit('add-to-fav', shoe);
+                const modalStore = useModalsStore();
+                modalStore.addToFav(shoe)            
             }
         },
 
