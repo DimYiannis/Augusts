@@ -54,7 +54,7 @@ app.use(
   cors({
     origin: ['http://localhost:3000'],
     credentials: true,
-    allowedHeaders: 'Content-Type,Authorization',
+    allowedHeaders: ['Content-Type','Authorization']
   })
 );
 
@@ -73,7 +73,8 @@ app.get("/api/v1", (req, res) => {
     path: '/',
     expires: new Date('2024-12-24T17:20:31.000Z'),
     httpOnly: true,
-    secure: true, // Set to true for HTTPS connections
+    //secure: true, // Set to true for HTTPS connections, production
+    secure: false, // For development, set to false
     sameSite: 'None', // Set to 'None' for cross-origin requests
   });
 });
