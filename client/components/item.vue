@@ -93,8 +93,8 @@ props: {
 },
 methods: {
   addToCart(item) {
-    console.log('addToCart called with item:', item);
     item.size = this.chosenSize;
+    console.log('item:', item.productType);
     const cartStore = useCartStore();
     cartStore.addToCart(item);
   },
