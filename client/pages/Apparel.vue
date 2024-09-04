@@ -12,8 +12,6 @@
           v-for="jacket in jackets"
           :jacket="jacket"
           :key="jacket.id"
-          @add-to-cart="addToCart"
-          @add-to-fav="addToFav"
         >
         </Jacket>
 
@@ -21,8 +19,6 @@
           v-for="accessory in accessories"
           :accessory="accessory"
           :key="accessory.id"
-          @add-to-cart="addToCart"
-          @add-to-fav="addToFav"
         >
         </Accessories>
 
@@ -30,8 +26,6 @@
           v-for="shoe in shoes"
           :shoe="shoe"
           :key="shoe.id"
-          @add-to-cart="addToCart"
-          @add-to-fav="addToFav"
         >
         </Shoes>
       </div>
@@ -44,6 +38,8 @@ import axios from "axios";
 import { useUserStore } from '../stores/myStore';
 import { useCartStore } from '../stores/myStore';
 import { useModalsStore } from '../stores/myStore';
+import { determineProductType } from '../stores/productTypeMapping'; // Import the mapping
+
 
 export default {
   data() {
@@ -58,7 +54,10 @@ export default {
     try {
       const response = await axios.get("http://localhost:5000/api/v1/apparel");
 
-      this.items = response.data;
+      this.items = response.data.posts.map(product => ({
+        ...product,
+        productType: determineProductType(product.name) // Determine and set product type
+      }));;
       console.log(this.items.jackets);
 
       (this.jackets = this.items.jackets),
@@ -73,17 +72,6 @@ export default {
     } finally {
       this.showHideSpinner = false;
     }
-  },
-  methods: {
-    addToCart(item) {
-      console.log("addToCart called with item:", item);
-      const cartStore = useCartStore();
-      cartStore.addToCart(item);
-    },
-    addToFav(item) {
-      const modalStore = useModalsStore();
-      modalStore.addToFav(item)
-    },
   },
 };
 </script>
