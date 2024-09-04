@@ -35,19 +35,19 @@
                   <!-- loading state -->
                   <LoadSpinner v-if="isFetchingCart || isRemovingFromCart" />
                   <div class="flex gap-8" v-for="(item, index) in cartItems" :key="index">
-                    <img :src="item.image" :alt="item.name"
+                    <img :src="item.productDetails.image" :alt="item.productDetails.name"
                     class="imgshop">
                     <div class="w-max space-y-1">
-                      <h3 class="font-bold">{{ item.name }}</h3>
+                      <h3 class="font-bold">{{ item.productDetails.name }}</h3>
                       <div class="flex gap-1"> 
                         <p class="font-semibold">size:</p> 
-                        <p>{{ item.size }}</p>
+                        <p>{{ item.productDetails.size }}</p>
                       </div>
-                      <div class="text-red-500 font-bold text-lg">price: {{ item.price }}$</div>
+                      <div class="text-red-500 font-bold text-lg">price: {{ item.productDetails.price }}$</div>
             
                     <div class="flex gap-1">
                       <button class="btnmodal" @click="removeCartItem(item.id)" :disabled="isRemovingFromCart">
-                        <div v-if="item.quantity==1">
+                        <div v-if="item.productDetails.quantity==1">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           width="20" height="20" viewBox="0 0 24 24">
                           <path fill="currentColor" d="M7 21q-.825 
@@ -64,8 +64,8 @@
                           </svg>
                         </div>
                       </button>
-                      <span>{{ item.quantity }}</span>
-                      <button  class="btnmodal" @click="addToCart(item)">
+                      <span>{{ item.productDetails.quantity }}</span>
+                      <button  class="btnmodal" @click="patchCart(item)">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                         width="20" height="20" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M12 19q-.425 0-.713-.288T11 
@@ -130,6 +130,7 @@ export default {
       isRemovingFromCart: cartStore.isRemovingFromCart,
       order: cartStore.order,
       addToCart: cartStore.addToCart,
+      patchCart: cartStore.patchCart,
       removeCartItem: cartStore.removeCartItem,
       closeCart() {
         modalStore.$patch({ showCart: false });
