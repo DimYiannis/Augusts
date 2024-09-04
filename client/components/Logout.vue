@@ -103,6 +103,7 @@
 import axios from "axios";
 import { useModalsStore } from '../stores/myStore';
 import { useUserStore } from '../stores/myStore';
+import { useRouter } from "vue-router";
 
 
 export default {
@@ -119,7 +120,7 @@ export default {
 
                 userStore.logout();
                 closeLogout();
-                this.$router.push("/");
+                $router.push("/");
             } catch (error) {
                 console.error("Error:", error);
             }
