@@ -13,8 +13,6 @@
           v-for="item in items"
           :item="item"
           :key="item.id"
-          @add-to-cart="addToCart"
-          @add-to-fav="addToFav"
         >
         </item>
       </div>
@@ -26,6 +24,8 @@
 import axios from "axios";
 import { useCartStore } from '../stores/myStore';
 import { useModalsStore } from '../stores/myStore';
+import { determineProductType } from '../stores/productTypeMapping'; // Import the mapping
+
 
 export default {
   data() {
@@ -40,7 +40,10 @@ export default {
     try {
       const response = await axios.get("http://localhost:5000/api/v1/sweats");
 
-      this.items = response.data.posts;
+      this.items = response.data.posts.map(product => ({
+        ...product,
+        productType: determineProductType(product.name) // Determine and set product type
+      }));;
       console.log(this.items);
     } catch (error) {
       console.error("Error fetching user information:", error);
@@ -52,20 +55,6 @@ export default {
       this.showHideSpinner = false;
     }
 
-  },
-  methods: {
-    closeSweats() {
-      this.$emit("close");
-    },
-    addToCart(item) {
-      console.log("addToCart called with item:", item);
-      const cartStore = useCartStore();
-      cartStore.addToCart(item);
-    },
-    addToFav(item) {
-      const modalStore = useModalsStore();
-      modalStore.addToFav(item)
-    },
   },
 };
 </script>
