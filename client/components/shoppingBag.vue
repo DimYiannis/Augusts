@@ -65,7 +65,7 @@
                         </div>
                       </button>
                       <span>{{ item.quantity }}</span>
-                      <button  class="btnmodal" @click="patchCart(item.productDetails._id)">
+                      <button  class="btnmodal" @click="patchCart(item._id)">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                         width="20" height="20" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M12 19q-.425 0-.713-.288T11 
