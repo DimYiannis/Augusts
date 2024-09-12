@@ -259,6 +259,19 @@ export const useCartStore = defineStore("cart", {
     async removeCartItem(itemId) {
       this.isRemovingFromCart = true;
       try {
+        // Check if itemId is valid
+        if (!itemId) {
+          throw new Error("Invalid item ID");
+        }
+        
+        // Ensure itemId is a string and properly formatted
+        if (typeof itemId !== "string" || !itemId.match(/^[0-9a-fA-F]{24}$/)) {
+          throw new Error("Invalid item ID format");
+        }
+
+        // Log the itemId to verify its value
+        console.log("Item ID passed to removeCartItem:", itemId);
+
         // Send DELETE request to the backend to remove the item
         await axios.delete(`http://localhost:5000/api/v1/cart/${itemId}`, {
           withCredentials: true,

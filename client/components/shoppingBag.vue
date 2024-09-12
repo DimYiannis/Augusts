@@ -46,7 +46,7 @@
                       <div class="text-red-500 font-bold text-lg">price: {{ item.productDetails.price }}$</div>
             
                     <div class="flex gap-1">
-                      <button class="btnmodal" @click="removeCartItem(item.id)" :disabled="isRemovingFromCart">
+                      <button class="btnmodal" @click="removeCartItem(item._id)" :disabled="isRemovingFromCart">
                         <div v-if="item.productDetails.quantity==1">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           width="20" height="20" viewBox="0 0 24 24">
@@ -64,8 +64,8 @@
                           </svg>
                         </div>
                       </button>
-                      <span>{{ item.productDetails.quantity }}</span>
-                      <button  class="btnmodal" @click="patchCart(item)">
+                      <span>{{ item.quantity }}</span>
+                      <button  class="btnmodal" @click="patchCart(item.productDetails._id)">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                         width="20" height="20" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M12 19q-.425 0-.713-.288T11 

@@ -20,8 +20,9 @@ const productModelMap = {
 
 const addToCart = async (req, res) => {
   const { productId, productType } = req.body;
-
+  
   try {
+
      // Ensure req.user is defined
      if (!req.user || !req.user.userId) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'User not authenticated' });
@@ -35,7 +36,7 @@ const addToCart = async (req, res) => {
       );
     }
 
-    // Check if the user has already liked the post
+    // Check if the user has already added the item
     const existingItem = await Cart.findOne({
       user: req.user.userId,
       product: productId, productType 
@@ -43,14 +44,14 @@ const addToCart = async (req, res) => {
     console.log("Existing item:", existingItem);
 
     if (existingItem) {
-      // User has already liked the post, so unlike it
+      // User has already added the item, so remove it
       await existingItem.remove();
 
       res.status(StatusCodes.OK).json({
         message: "Item removed successfully!",
       });
     } else {
-      // User has not liked the post, so create a new like
+      // User has not added the item
       const dbProduct = await ProductModel.findById(productId);
 
       if (!dbProduct) {
@@ -99,6 +100,7 @@ const getCartItems = async (req, res) => {
           user: item.user,
           product: item.product,
           productType: item.productType,
+          quantity: item.quantity,
           createdAt: item.createdAt,
           updatedAt: item.updatedAt,
           productDetails: productDetails || null,
@@ -144,8 +146,53 @@ const deleteCartItem = async (req, res) => {
   }
 };
 
+// update 
+const updateCartItem = async (req, res) => {
+  const { id: itemId } = req.params;
+  const { quantity } = req.body;
+
+  try {
+    if (!req.user || !req.user.userId) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'User not authenticated' });
+    }
+
+    // Validate that the quantity is a positive integer
+    if (quantity <= 0) {
+      throw new CustomError.BadRequestError("Quantity must be greater than zero");
+    }
+
+     // Log the incoming request data for debugging
+     console.log(`Updating cart item with ID: ${itemId}`);
+     console.log(`Requested quantity: ${quantity}`); 
+
+    // Find the cart item by ID
+    const item = await Cart.findById(itemId);
+
+    if (!item) {
+      throw new CustomError.NotFoundError(`No item found with id: ${itemId}`);
+    }
+
+    // Check user permissions
+    checkPermissions(req.user, item.user);
+
+    // Update the quantity
+    item.quantity = quantity;
+    await item.save();
+
+    res.status(StatusCodes.OK).json({
+      message: "Item quantity updated successfully!",
+      item,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   addToCart,
   getCartItems,
   deleteCartItem,
+  updateCartItem,
 };
