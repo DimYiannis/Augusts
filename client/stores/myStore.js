@@ -263,7 +263,7 @@ export const useCartStore = defineStore("cart", {
         if (!itemId) {
           throw new Error("Invalid item ID");
         }
-        
+
         // Ensure itemId is a string and properly formatted
         if (typeof itemId !== "string" || !itemId.match(/^[0-9a-fA-F]{24}$/)) {
           throw new Error("Invalid item ID format");
@@ -299,25 +299,29 @@ export const useCartStore = defineStore("cart", {
           throw new Error("Invalid item ID");
         }
 
+        // Check if item is already in local cartItems
+        const index = this.cartItems.findIndex(
+          (cartItem) => cartItem.id === itemId
+        );
+      
+        if (index === -1) {
+          throw new Error("Item not found in local cart");
+        }
+
+        // Get current quantity and increase by one
+        const currentQuantity = this.cartItems[index].quantity;
+        const newQuantity = currentQuantity + 1;
+
         const response = await axios.patch(
           `http://localhost:5000/api/v1/cart/${itemId}`,
+          { quantity: newQuantity },
           { withCredentials: true }
         );
 
         console.log("Item updated successfully:", response.data);
 
-        // local cartItems state
-        const index = this.cartItems.findIndex(
-          (cartItem) => cartItem.id === itemId
-        );
-
-        if (index !== -1) {
-          // Item exists in local cartItems, update quantity
-          this.cartItems[index].quantity = response.data.item.quantity;
-        } else {
-          // Item does not exist, add new item with quantity from server response
-          this.cartItems.push(response.data.item);
-        }
+        // Update local cartItems state with the new quantity
+        this.cartItems[index].quantity = response.data.item.quantity;
       } catch (error) {
         console.error("Error adding item to cart:", error);
         if (error.response) {
@@ -334,7 +338,7 @@ export const useCartStore = defineStore("cart", {
       state.cartItems.reduce((acc, item) => acc + item.quantity, 0),
     totalPrice: (state) =>
       state.cartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
+        (acc, item) => acc + item.productDetails.price * item.quantity,
         0
       ),
   },
