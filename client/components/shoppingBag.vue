@@ -7,7 +7,8 @@
               <div class="text-center font-semibold">
                 <h2>Shopping Cart</h2>
               </div>
-              <div class="h-full mt-4 ">
+
+              <div class="h-full mt-4">
                 <div v-if="cartItems.length === 0"
                 class="text-center font-semibold text-xl 
                   place-self-top mt-7 grid">
@@ -32,9 +33,12 @@
                   
                 </div>
                 <div v-else>
-                  <!-- loading state -->
-                  <LoadSpinner v-if="isFetchingCart || isRemovingFromCart" />
-                  <div class="flex gap-8" v-for="(item, index) in cartItems" :key="index">
+                    <!-- Loading state -->
+                  <div class="h-full mt-4" v-if="isFetchingCart">
+                    <spinner />
+                  </div>
+
+                  <div class="flex gap-8" v-for="(item, index) in cartItems" :key="index" v-if="!isFetchingCart">
                     <img :src="item.productDetails.image" :alt="item.productDetails.name"
                     class="imgshop">
                     <div class="w-max space-y-1">
@@ -46,8 +50,10 @@
                       <div class="text-red-500 font-bold text-lg">price: {{ item.productDetails.price }}$</div>
             
                     <div class="flex gap-1">
-                      <button class="btnmodal" @click="removeCartItem(item._id)" :disabled="isRemovingFromCart">
-                        <div v-if="item.productDetails.quantity==1">
+                      <button class="btnmodal" >
+                        <div v-if="item.quantity==1" 
+                        @click="removeCartItem(item._id)"
+                        :disabled="isRemovingFromCart">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           width="20" height="20" viewBox="0 0 24 24">
                           <path fill="currentColor" d="M7 21q-.825 
@@ -56,7 +62,7 @@
                           17h2V8H9v9Zm4 0h2V8h-2v9ZM7 6v13V6Z"/>
                           </svg>
                         </div>
-                        <div v-else>
+                        <div v-else @click="decrementCart(item._id)">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           width="20" height="20" viewBox="0 0 24 24">
                           <path fill="currentColor" 
@@ -112,14 +118,14 @@ export default {
     const totalItems = computed(() => cartStore.totalItems);
     const totalPrice = computed(() => cartStore.totalPrice);
 
-    // Fetch cart items when the component is mounted
-    onMounted(async () => {
-      try {
-        await cartStore.fetchCartItems();
-      } catch (error) {
-        console.error("Failed to fetch cart items:", error);
-      }
-    });
+    // // Fetch cart items when the component is mounted
+    // onMounted(async () => {
+    //   try {
+    //     await cartStore.fetchCartItems();
+    //   } catch (error) {
+    //     console.error("Failed to fetch cart items:", error);
+    //   }
+    // });
 
     return {
       totalItems,
@@ -131,6 +137,7 @@ export default {
       order: cartStore.order,
       addToCart: cartStore.addToCart,
       patchCart: cartStore.patchCart,
+      decrementCart: cartStore.decrementCart,
       removeCartItem: cartStore.removeCartItem,
       closeCart() {
         modalStore.$patch({ showCart: false });
