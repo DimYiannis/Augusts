@@ -99,7 +99,7 @@
       @mouseleave="showBagtip = false"
       class="shoppingbag"
     >
-      <button class="headerbtn" @click="toggleCart">
+      <button class="headerbtn" @click="toggleCart" :disabled="cartStore.isAddingToCart">
         <!--conditional rendering in order to describe what 
                 the icon is 'like a tooltip short of speak'-->
         <h1 v-if="showBagtip" class="tooltip">Shopping Bag</h1>
@@ -196,6 +196,14 @@ const showBar = ref(false);
 const showBagtip = ref(false);
 const showFavtip = ref(false);
  
+// Fetch cart items when the component is mounted
+onMounted(async () => {
+  try {
+    await cartStore.fetchCartItems();
+  } catch (error) {
+    console.error("Failed to fetch cart items:", error);
+  }
+});
 
 const cartItems = ref([]);
 const favItems = ref([]);
