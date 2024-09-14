@@ -48,7 +48,7 @@ const addToCart = async (req, res) => {
       await existingItem.remove();
 
       res.status(StatusCodes.OK).json({
-        message: "Item removed successfully!",
+        message: "Item added successfully!",
       });
     } else {
       // User has not added the item
