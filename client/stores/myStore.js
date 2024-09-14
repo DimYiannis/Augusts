@@ -2,7 +2,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { piniaPersistConfig } from "./piniaPersistConfig";
-import { determineProductType } from "./productTypeMapping"; // Import the mapping
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -31,6 +30,8 @@ export const useUserStore = defineStore("user", {
   },
   persist: piniaPersistConfig("userStore"),
 });
+
+// -- MODALS --
 
 export const useModalsStore = defineStore("modal", {
   state: () => ({
@@ -143,6 +144,8 @@ export const useModalsStore = defineStore("modal", {
   },
   persist: piniaPersistConfig("modalStore"),
 });
+
+// -- CART --
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
@@ -293,17 +296,24 @@ export const useCartStore = defineStore("cart", {
       this.isAddingToCart = true; //  indicate loading state
       try {
         console.log("Item passed to addToCart:", itemId);
+        console.log("cart items", this.cartItems);
 
         // Check if itemId is valid
         if (!itemId) {
           throw new Error("Invalid item ID");
         }
 
+        // Log each cart item for debugging
+        this.cartItems.forEach((cartItem, index) => {
+          console.log(`Cart item ${index}:`, cartItem._id);
+        });
+
         // Check if item is already in local cartItems
         const index = this.cartItems.findIndex(
-          (cartItem) => cartItem.id === itemId
+          (cartItem) => cartItem._id === itemId
         );
-      
+
+        console.log("Found item index:", index);
         if (index === -1) {
           throw new Error("Item not found in local cart");
         }
@@ -311,6 +321,56 @@ export const useCartStore = defineStore("cart", {
         // Get current quantity and increase by one
         const currentQuantity = this.cartItems[index].quantity;
         const newQuantity = currentQuantity + 1;
+
+        const response = await axios.patch(
+          `http://localhost:5000/api/v1/cart/${itemId}`,
+          { quantity: newQuantity },
+          { withCredentials: true }
+        );
+
+        console.log("Item updated successfully:", response.data);
+
+        // Update local cartItems state with the new quantity
+        this.cartItems[index].quantity = response.data.item.quantity;
+      } catch (error) {
+        console.error("Error adding item to cart:", error);
+        if (error.response) {
+          console.error("Error response data:", error.response.data);
+          console.log("Response headers:", error.response.headers);
+        }
+      } finally {
+        this.isAddingToCart = false; // Reset the loading state
+      }
+    },
+    async decrementCart(itemId) {
+      this.isAddingToCart = true; //  indicate loading state
+      try {
+        console.log("Item passed to addToCart:", itemId);
+        console.log("cart items", this.cartItems);
+
+        // Check if itemId is valid
+        if (!itemId) {
+          throw new Error("Invalid item ID");
+        }
+
+        // Log each cart item for debugging
+        this.cartItems.forEach((cartItem, index) => {
+          console.log(`Cart item ${index}:`, cartItem._id);
+        });
+
+        // Check if item is already in local cartItems
+        const index = this.cartItems.findIndex(
+          (cartItem) => cartItem._id === itemId
+        );
+
+        console.log("Found item index:", index);
+        if (index === -1) {
+          throw new Error("Item not found in local cart");
+        }
+
+        // Get current quantity and increase by one
+        const currentQuantity = this.cartItems[index].quantity;
+        const newQuantity = currentQuantity - 1;
 
         const response = await axios.patch(
           `http://localhost:5000/api/v1/cart/${itemId}`,
