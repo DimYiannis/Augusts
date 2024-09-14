@@ -92,11 +92,25 @@ props: {
   }
 },
 methods: {
-  addToCart(item) {
+  async addToCart(item) {
+    if (!this.chosenSize) {
+      alert('Please select a size before adding to cart');
+      return;
+    }
+
     item.size = this.chosenSize;
-    console.log('item:', item.productType);
+
     const cartStore = useCartStore();
-    cartStore.addToCart(item);
+
+    try {
+      // Await the addToCart action
+      await cartStore.addToCart(item);
+
+      // Fetch updated cart items after successfully adding to the cart
+      await cartStore.fetchCartItems();
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+    }
   },
   addToFav(item) {
     item.size = this.chosenSize
