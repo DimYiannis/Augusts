@@ -8,11 +8,17 @@
                 <h2>Shopping Cart</h2>
               </div>
 
-              <div class="h-full mt-4">
-                <div v-if="cartItems.length === 0"
-                class="text-center font-semibold text-xl 
-                  place-self-top mt-7 grid">
-                  Your cart is empty
+               <!-- Loader while fetching items -->
+              <div v-if="isFetchingCart || isRemovingFromCart" class="flex justify-center mt-10">
+                <Spinner />
+              </div>
+
+              <div v-else>
+                <div class="h-full mt-4">
+                  <div v-if="cartItems.length === 0"
+                    class="text-center font-semibold text-xl 
+                    place-self-top mt-7 grid">
+                    Your cart is empty
                   <div class="place-self-center mt-14">
                     <svg 
                     xmlns="http://www.w3.org/2000/svg"
@@ -33,12 +39,7 @@
                   
                 </div>
                 <div v-else>
-                    <!-- Loading state -->
-                  <div class="h-full mt-4" v-if="isFetchingCart">
-                    <spinner />
-                  </div>
-
-                  <div class="flex gap-8" v-for="(item, index) in cartItems" :key="index" v-if="!isFetchingCart">
+                  <div class="flex gap-8" v-for="(item, index) in cartItems" :key="index">
                     <img :src="item.productDetails.image" :alt="item.productDetails.name"
                     class="imgshop">
                     <div class="w-max space-y-1">
@@ -85,6 +86,7 @@
                   </div>
                 </div>
               </div>
+              </div>
             </div>
           </div>
 
@@ -117,31 +119,43 @@ export default {
     // Using computed to get reactive values from store
     const totalItems = computed(() => cartStore.totalItems);
     const totalPrice = computed(() => cartStore.totalPrice);
+    const cartItems = computed(() => cartStore.cartItems);
 
-    // // Fetch cart items when the component is mounted
-    // onMounted(async () => {
-    //   try {
-    //     await cartStore.fetchCartItems();
-    //   } catch (error) {
-    //     console.error("Failed to fetch cart items:", error);
-    //   }
-    // });
+    const closeCart = () => {
+      modalStore.showCart = false;
+    };
+
+    const removeCartItem = async (itemId) => {
+      try {
+        console.log('Removing item:', itemId);
+        // Call the removeCartItem method from the store
+        await cartStore.removeCartItem(itemId);
+        console.log('Item removed, fetching updated cart items');
+        // Fetch the updated cart items
+        await cartStore.fetchCartItems();
+        console.log('Cart items fetched');
+      } catch (error) {
+        console.error('Failed to delete item', error);
+      } finally {
+        // Close the cart after removing the item
+        closeCart();
+    console.log('Cart closed');
+  }
+};
 
     return {
       totalItems,
       totalPrice,
       cartItems: cartStore.cartItems,
-      isOrdering: cartStore.isOrdering,
-      isFetchingCart: cartStore.isFetchingCart,
-      isRemovingFromCart: cartStore.isRemovingFromCart,
+      isOrdering: computed(() => cartStore.isOrdering),
+      isFetchingCart: computed(() => cartStore.isFetchingCart),
+      isRemovingFromCart: computed(() => cartStore.isRemovingFromCart),
       order: cartStore.order,
       addToCart: cartStore.addToCart,
       patchCart: cartStore.patchCart,
-      decrementCart: cartStore.decrementCart,
-      removeCartItem: cartStore.removeCartItem,
-      closeCart() {
-        modalStore.$patch({ showCart: false });
-      },
+      decrementCart: cartStore.decrementCart, 
+      removeCartItem, // Return removeCartItem so it can be used in the template
+      closeCart, // Return closeCart so it can be used in the template if needed
     };
   },
 };

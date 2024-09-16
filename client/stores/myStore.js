@@ -282,6 +282,7 @@ export const useCartStore = defineStore("cart", {
 
         // Update local state to reflect item removal
         this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
+
       } catch (error) {
         console.error("Error removing item from cart:", error);
         if (error.response) {

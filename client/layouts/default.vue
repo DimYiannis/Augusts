@@ -99,7 +99,9 @@
       @mouseleave="showBagtip = false"
       class="shoppingbag"
     >
-      <button class="headerbtn" @click="toggleCart" :disabled="cartStore.isAddingToCart">
+      <button class="headerbtn" 
+      @click="toggleCart" 
+      :disabled="cartStore.isAddingToCart || cartStore.isFetchingCart">
         <!--conditional rendering in order to describe what 
                 the icon is 'like a tooltip short of speak'-->
         <h1 v-if="showBagtip" class="tooltip">Shopping Bag</h1>
