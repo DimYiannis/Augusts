@@ -2,6 +2,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { piniaPersistConfig } from "./piniaPersistConfig";
+import { determineProductType } from "./productTypeMapping"; // Import the mapping
 
 export const useUserStore = defineStore("user", {
   state: () => ({
