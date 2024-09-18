@@ -40,7 +40,7 @@ export default {
     try {
       const response = await axios.get("http://localhost:5000/api/v1/bottoms");
 
-      this.items = response.data.posts.map(product => ({
+      this.items = response.data.product.map(product => ({
         ...product,
         productType: determineProductType(product.name) // Determine and set product type
       }));;

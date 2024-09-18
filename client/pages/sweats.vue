@@ -43,10 +43,10 @@ export default {
       this.items = response.data.posts.map(product => ({
         ...product,
         productType: determineProductType(product.name) // Determine and set product type
-      }));;
+      }));
       console.log(this.items);
     } catch (error) {
-      console.error("Error fetching user information:", error);
+      console.error("Error fetching sweats information:", error);
       if (error.response) {
         console.error("Error response data:", error.response.data);
         console.log("Response headers:", error.response.headers);

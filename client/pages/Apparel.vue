@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       showHideSpinner: true,
+      items: [],
       jackets: [],
       accessories: [],
       shoes: [],
@@ -54,15 +55,26 @@ export default {
     try {
       const response = await axios.get("http://localhost:5000/api/v1/apparel");
 
-      this.items = response.data.posts.map(product => ({
-        ...product,
-        productType: determineProductType(product.name) // Determine and set product type
-      }));;
-      console.log(this.items.jackets);
+      if (response.data && response.data.jackets && response.data.accessories && response.data.shoes) {
+        this.jackets = response.data.jackets.map(product => ({
+          ...product,
+          productType: 'jacket'
+        }));
+        this.accessories = response.data.accessories.map(product => ({
+          ...product,
+          productType: 'accessory'
+        }));
+        this.shoes = response.data.shoes.map(product => ({
+          ...product,
+          productType: 'shoe'
+        }));
 
-      (this.jackets = this.items.jackets),
-        (this.accessories = this.items.accessories),
-        (this.shoes = this.items.shoes)
+        console.log("Jackets:", this.jackets);
+        console.log("Accessories:", this.accessories);
+        console.log("Shoes:", this.shoes);
+      } else {
+        console.error("Unexpected response structure:", response.data);
+      }
     } catch (error) {
       console.error("Error fetching user information:", error);
       if (error.response) {

@@ -23,38 +23,42 @@
 <script>
   import axios from "axios";
   import { useCartStore } from '../stores/myStore';
-import { useModalsStore } from '../stores/myStore';
-import { determineProductType } from '../stores/productTypeMapping'; // Import the mapping
+  import { useModalsStore } from '../stores/myStore';
+  import { determineProductType } from '../stores/productTypeMapping'; // Import the mapping
 
 
   export default {
   data() {
     return {
       showItem: true,
-      cartItems: [],
       showHideSpinner: true,
       items: [],
     }
   },
 
   async created() {
-    try{
-      const response = await axios.get("http://localhost:5000/api/v1/shirts");
+  try {
+    const response = await axios.get("http://localhost:5000/api/v1/shirts");
 
-      this.items = response.data.posts.map(product => ({
+    if (response.data && response.data.product) {
+      this.items = response.data.product.map(product => ({
         ...product,
-        productType: determineProductType(product.name) // Determine and set product type
-      }));;
+        productType: determineProductType(product.name),
+      }));
       console.log(this.items);
-    } catch (error) {
-      console.error("Error fetching user information:", error);
-      if (error.response) {
-        console.error("Error response data:", error.response.data);
-        console.log("Response headers:", error.response.headers);
-      }
-    } finally {
-      this.showHideSpinner = false;
+    } else {
+      console.error("The 'posts' array is missing in the response:", response.data);
     }
-  },
+  } catch (error) {
+    console.error("Error fetching shirts information:", error);
+    if (error.response) {
+      console.error("Error response data:", error.response.data);
+      console.log("Response headers:", error.response.headers);
+    }
+  } finally {
+    this.showHideSpinner = false;
+  }
+}
+
 }
 </script>
