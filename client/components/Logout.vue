@@ -15,13 +15,13 @@
         </div>
 
         <div class="logout-options">
-          <button class="option-button">
+          <button class="option-button" @click="showVouchers">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/>
             </svg>
             <p class="option-text">Vouchers</p>
           </button>
-          <button class="option-button">
+          <button class="option-button" @click="showNewsletter">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20">
               <g fill="none" stroke="currentColor">
                 <path d="M3 4a2 2 0 0 0-2 2v1.161l8.441 4.221a1.25 1.25 0 0 0 1.118 0L19 7.162V6a2 2 0 0 0-2-2H3Z"/>
@@ -39,20 +39,19 @@
             </svg>
             <p class="option-text">Orders</p>
           </button>
-          <button class="option-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0a1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789a6.721 6.721 0 0 1-3.168-.789a3.376 3.376 0 0 1 6.338 0Z"/>
-            </svg>
-            <p class="option-text">Contact Information</p>
-          </button>
-          <button class="option-button">
+          <button class="option-button" @click="showHelp">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-6.99 15c-.7 0-1.26-.56-1.26-1.26c0-.71.56-1.25 1.26-1.25c.71 0 1.25.54 1.25 1.25c-.01.69-.54 1.26-1.25 1.26m3.01-7.4c-.76 1.11-1.48 1.46-1.87 2.17c-.16.29-.22.48-.22 1.41h-1.82c0-.49-.08-1.29.31-1.98c.49-.87 1.42-1.39 1.96-2.16c.57-.81.25-2.33-1.37-2.33c-1.06 0-1.58.8-1.8 1.48l-1.65-.7C9.01 7.15 10.22 6 11.99 6c1.48 0 2.49.67 3.01 1.52c.44.72.7 2.07.02 3.08"/>
             </svg>
             <p class="option-text">Help</p>
           </button>
+          <button class="option-button" @click="showContactInfo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0a1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789a6.721 6.721 0 0 1-3.168-.789a3.376 3.376 0 0 1 6.338 0Z"/>
+            </svg>
+            <p class="option-text">Contact Information</p>
+          </button>
         </div>
-
         <button @click="logout" class="logout-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20">
             <g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd">
@@ -67,6 +66,9 @@
   </div>
   
   <OrderPage v-if="isOrderPageVisible" @close="closeOrderPage" />
+  <HelpPage v-if="isHelpPageVisible" @close="closeHelpPage" />
+  <NewsletterPage v-if="isNewsletterPageVisible" @close="closeNewsletterPage" />
+  <VouchersPage v-if="isVouchersPageVisible" @close="closeVouchersPage" />
 </template>
 
 <script>
@@ -76,10 +78,16 @@ import { useUserStore } from '../stores/myStore';
 import { useRouter } from "vue-router";
 import { ref, reactive, onMounted, computed } from 'vue';
 import OrderPage from './OrderPage.vue';
+import HelpPage from './HelpPage.vue';
+import NewsletterPage from './NewsletterPage.vue';
+import VouchersPage from './VouchersPage.vue';
 
 export default {
   components: {
     OrderPage,
+    HelpPage,
+    NewsletterPage,
+    VouchersPage,
   },
   setup() {
     const userStore = useUserStore();
@@ -90,6 +98,9 @@ export default {
     const position = reactive({ x: 0, y: 0 });
     const offset = reactive({ x: 0, y: 0 });
     const isOrderPageVisible = ref(false);
+    const isHelpPageVisible = ref(false);
+    const isNewsletterPageVisible = ref(false);
+    const isVouchersPageVisible = ref(false);
 
     const logout = async () => {
       try {
@@ -139,6 +150,30 @@ export default {
       isOrderPageVisible.value = false;
     };
 
+    const showHelp = () => {
+      isHelpPageVisible.value = true;
+    };
+
+    const closeHelpPage = () => {
+      isHelpPageVisible.value = false;
+    };
+
+    const showNewsletter = () => {
+      isNewsletterPageVisible.value = true;
+    };
+
+    const closeNewsletterPage = () => {
+      isNewsletterPageVisible.value = false;
+    };
+
+    const showVouchers = () => {
+      isVouchersPageVisible.value = true;
+    };
+
+    const closeVouchersPage = () => {
+      isVouchersPageVisible.value = false;
+    };
+
     const greeting = computed(() => {
       const hour = new Date().getHours();
       if (hour < 12) return "Good morning";
@@ -166,6 +201,15 @@ export default {
       isOrderPageVisible,
       showOrders,
       closeOrderPage,
+      isHelpPageVisible,
+      showHelp,
+      closeHelpPage,
+      isNewsletterPageVisible,
+      showNewsletter,
+      closeNewsletterPage,
+      isVouchersPageVisible,
+      showVouchers,
+      closeVouchersPage,
       greeting,
     };
   }
