@@ -46,7 +46,7 @@
                       <h3 class="font-bold">{{ item.productDetails.name }}</h3>
                       <div class="flex gap-1"> 
                         <p class="font-semibold">size:</p> 
-                        <p>{{ item.productDetails.size }}</p>
+                        <p>{{ item.size }}</p>
                       </div>
                       <div class="text-red-500 font-bold text-lg">price: {{ item.productDetails.price }}$</div>
             
