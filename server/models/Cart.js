@@ -18,6 +18,11 @@ const CartSchema = mongoose.Schema(
       required: true,
       enum: ['Sweats', 'Bottoms', 'Shirts','Accessories', 'Shoes', 'Jackets'] // product model names 
     },
+    size: {
+      type: String,
+      required: true,
+      enum: ['S', 'M', 'L', 'XL', 'XXL', null], 
+    },
     quantity: {
       type: Number,
       required: true,
@@ -30,7 +35,7 @@ const CartSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-//  uniqueness based on user and post
-CartSchema.index({ user: 1, product: 1, productType: 1 }, { unique: true });
+//  uniqueness 
+CartSchema.index({ user: 1, product: 1, productType: 1, size: 1 }, { unique: true });
 
 module.exports = mongoose.model("Cart", CartSchema);
