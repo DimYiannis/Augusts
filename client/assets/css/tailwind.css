@@ -198,28 +198,27 @@ text-[#eceef3] tablet:text-black desktop:text-white
 }
 
 /*shoppingbag component*/
-.shoppings {
-  @apply w-[240px] h-[310px] tablet:w-[300px] 
-  tablet:h-[400px] desktop:w-[400px] 
-  desktop:h-[570px] bg-white 
-  rounded-md relative z-10 justify-self-end top-14 right-8 
-  grid py-4 appearance-none  overflow-auto border-2 
-  border-[#363636];
+.shoppings, .fav {
+  @apply w-[240px] tablet:w-[300px] desktop:w-[400px]
+  bg-white rounded-md z-50 overflow-auto border-2 
+  border-[#363636] fixed top-[3rem] right-8 mt-2; /* Changed right-4 to right-8 */
+  max-height: calc(100vh - 4rem); /* Adjust based on your navbar height */
 }
+
+.shoppings {
+  height: auto; /* Remove fixed height */
+}
+
+.fav {
+  height: auto; /* Remove fixed height */
+}
+
 .chosenitems {
   @apply bg-white h-[230px] tablet:w-[300px] 
   tablet:h-[300px] 
   desktop:w-[370px] desktop:h-[470px]
   place-self-center self-start border-solid 
   border-b-2 border-black overflow-auto rounded-md;
-}
-
-.fav {
-  @apply w-[240px] h-[280px] tablet:w-[300px] tablet:h-[350px] desktop:w-[400px] 
-  desktop:h-[520px] bg-white rounded-md relative
-  z-10 justify-self-end top-14 right-8 grid pb-2 
-  overscroll-none appearance-none border-2 
-  border-[#363636];
 }
 
 .favitem {
@@ -231,8 +230,7 @@ text-[#eceef3] tablet:text-black desktop:text-white
 }
 
 .invbackdrop {
-  @apply top-0 fixed w-full h-full grid 
-  justify-items-stretch  bg-transparent z-20;
+  @apply fixed inset-0 w-full h-full grid place-items-center bg-black bg-opacity-50 z-20;
 }
 
 .imgshop {
@@ -297,7 +295,103 @@ select {
   mt-[10px]
   font-bold;
 }
+
+
 /*logout*/
-.btn {
-  @apply m-3 flex flex-col items-center;
+.logout-panel {
+  @apply bg-white text-black shadow-lg rounded-lg overflow-hidden cursor-move;
+  position: absolute;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.logout-content {
+  @apply flex flex-col h-full;
+}
+
+.logout-header {
+  @apply flex justify-between items-center bg-gray-100 p-6 cursor-move;
+}
+
+.welcome-text {
+  @apply text-2xl font-bold;
+}
+
+.greeting {
+  @apply block text-gray-600;
+}
+
+.user-name {
+  @apply block text-black mt-1;
+}
+
+.close-button {
+  @apply text-gray-500 hover:text-gray-700 transition-colors duration-200;
+}
+
+.logout-options {
+  @apply grid grid-cols-2 gap-4 p-6 bg-white;
+}
+
+.option-button {
+  @apply flex flex-col items-center justify-center p-4
+  bg-gray-50 rounded-lg transition-all duration-200
+  hover:bg-gray-100;
+}
+
+.option-button svg {
+  @apply w-8 h-8 mb-2 text-gray-600;
+}
+
+.option-button p {
+  @apply text-sm font-medium text-gray-700;
+}
+
+.logout-button {
+  @apply flex items-center justify-center w-full mt-4 py-4 px-6
+  bg-red-500 hover:bg-red-600 text-white font-bold rounded-b-lg
+  transition-all duration-200 hover:transform hover:scale-105;
+}
+
+.logout-button svg {
+  @apply w-5 h-5 mr-2;
+}
+
+/* Add this to your global styles or Tailwind config */
+@media (prefers-color-scheme: dark) {
+  .logout-panel {
+    @apply bg-gray-900;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
