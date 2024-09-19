@@ -212,21 +212,10 @@ export const useCartStore = defineStore("cart", {
     async addToCart(item) {
       this.isAddingToCart = true; //  indicate loading state
       try {
-        console.log("Item passed to addToCart:", item);
-        const productType = item.productType;
-        const productId = item._id;
-        // console.log('Product Type:', productType); // Log the product type
-        // console.log('Product ID:', productId); // Log the product ID
+        const { _id: productId, productType, size } = item;
+        const payload = { productId, productType, size };
 
-        if (!productType || !productId) {
-          throw new Error("Invalid product data");
-        }
-
-        // Include productType in the item object
-        const payload = { productId, productType };
-
-        // Log the payload to verify its content
-        console.log("Payload being sent:", payload);
+        console.log("Payload being sent:", payload); 
 
         // POST request to add the item to the server cart
         const response = await axios.post(
@@ -235,19 +224,17 @@ export const useCartStore = defineStore("cart", {
           { withCredentials: true }
         );
 
-        console.log("Item added to server cart successfully:", response.data);
+        console.log("Server response:", response.data);
 
-        // Check if item is already in local cartItems
+        const newItem = response.data.item;
         const index = this.cartItems.findIndex(
-          (cartItem) => cartItem.id === item.id && cartItem.size === item.size
+          (cartItem) => cartItem._id === newItem._id
         );
 
         if (index !== -1) {
-          // Item exists in local cartItems, update quantity
-          this.cartItems[index].quantity += 1;
+          this.cartItems[index] = newItem;
         } else {
-          // Item does not exist, add new item with quantity 1
-          this.cartItems.push({ ...item, quantity: 1 });
+          this.cartItems.push(newItem);
         }
       } catch (error) {
         console.error("Error adding item to cart:", error);
