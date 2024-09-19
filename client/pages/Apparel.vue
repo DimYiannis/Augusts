@@ -58,15 +58,15 @@ export default {
       if (response.data && response.data.jackets && response.data.accessories && response.data.shoes) {
         this.jackets = response.data.jackets.map(product => ({
           ...product,
-          productType: 'jacket'
+          productType: 'Jackets'
         }));
         this.accessories = response.data.accessories.map(product => ({
           ...product,
-          productType: 'accessory'
+          productType: 'Accessories'
         }));
         this.shoes = response.data.shoes.map(product => ({
           ...product,
-          productType: 'shoe'
+          productType: 'Shoes'
         }));
 
         console.log("Jackets:", this.jackets);
