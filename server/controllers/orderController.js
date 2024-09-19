@@ -157,6 +157,15 @@ const deleteOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Order deleted successfully' });
 };
 
+const getUserOrders = async (req, res) => {
+  try {
+    const userId = req.user.userId; // Assuming you have user authentication middleware
+    const orders = await Order.find({ user: userId }).sort({ date: -1 });
+    res.status(200).json({ orders });
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching orders' });
+  }
+};
 
 module.exports = {
   getAllOrders,
@@ -164,5 +173,6 @@ module.exports = {
   getCurrentUserOrders,
   createOrder,
   updateOrder,
-  deleteOrder
+  deleteOrder,
+  getUserOrders
 }
