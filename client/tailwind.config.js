@@ -12,21 +12,14 @@ export default {
     // customized breakpoints //
     screens: {
       smallscreen: "300px",
-
       mobile: "600px",
-
       tablet: "760px",
-      // => @media (min-width: 760px) { ... }
-
       laptop: "1024px",
-      // => @media (min-width: 1024px) { ... }
-
       desktop: "1280px",
-      // => @media (min-width: 1280px) { ... }
-
       lgdesk: "1600px",
     },
     extend: {},
   },
+  darkMode: 'media', // Add this line to enable dark mode based on system preferences
   plugins: [require("tailwind-scrollbar") ({ nocompatible: true })],
 };
