@@ -98,13 +98,17 @@ methods: {
       return;
     }
 
-    item.size = this.chosenSize;
+    const itemToAdd = {
+        _id: item._id,
+        productType: item.productType,
+        size: this.chosenSize,
+      };
 
     const cartStore = useCartStore();
 
     try {
       // Await the addToCart action
-      await cartStore.addToCart(item);
+      await cartStore.addToCart(itemToAdd);
 
       // Fetch updated cart items after successfully adding to the cart
       await cartStore.fetchCartItems();
@@ -113,9 +117,12 @@ methods: {
     }
   },
   addToFav(item) {
-    item.size = this.chosenSize
+    const itemWithSize = {
+        ...item,
+        size: this.chosenSize
+      };
     const modalStore = useModalsStore();
-    modalStore.addToFav(item)
+    modalStore.addToFav(itemWithSize)
   }
 }
 };
