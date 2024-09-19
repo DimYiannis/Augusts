@@ -19,10 +19,9 @@ const productModelMap = {
 };
 
 const addToCart = async (req, res) => {
-  const { productId, productType } = req.body;
+  const { productId, productType, size } = req.body;
   
   try {
-
      // Ensure req.user is defined
      if (!req.user || !req.user.userId) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'User not authenticated' });
@@ -36,34 +35,37 @@ const addToCart = async (req, res) => {
       );
     }
 
-    // Check if the user has already added the item
+    // Check if the product exists
+    const dbProduct = await ProductModel.findById(productId);
+    if (!dbProduct) {
+      throw new CustomError.NotFoundError(`No product found with id: ${productId}`);
+    }
+
+    // Check if the user has already added the item with the same size
     const existingItem = await Cart.findOne({
       user: req.user.userId,
-      product: productId, productType 
+      product: productId, 
+      productType,
+      size
     });
-    console.log("Existing item:", existingItem);
 
     if (existingItem) {
-      // User has already added the item, so remove it
-      await existingItem.remove();
+      // Increment quantity if item already exists
+      existingItem.quantity += 1;
+      await existingItem.save();
 
       res.status(StatusCodes.OK).json({
-        message: "Item added successfully!",
+        message: "Item quantity updated successfully!",
+        item: existingItem,
       });
     } else {
-      // User has not added the item
-      const dbProduct = await ProductModel.findById(productId);
-
-      if (!dbProduct) {
-        throw new CustomError.NotFoundError(
-          `No product found with id: ${productId}`
-        );
-      }
-
+      // Create a new cart item
       const newItem = new Cart({
         user: req.user.userId,
         product: dbProduct._id,
         productType,
+        size, 
+        quantity: 1,
       });
       await newItem.save();
 
@@ -100,6 +102,7 @@ const getCartItems = async (req, res) => {
           user: item.user,
           product: item.product,
           productType: item.productType,
+          size: item.size,
           quantity: item.quantity,
           createdAt: item.createdAt,
           updatedAt: item.updatedAt,
