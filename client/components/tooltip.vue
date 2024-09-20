@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { useModalsStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/modalStore';
 export default {
 
     methods: {

@@ -57,8 +57,8 @@
 </template>
 
 <script>
-import { useCartStore } from '../stores/myStore';
-import { useModalsStore } from '../stores/myStore';
+import { useCartStore } from '../stores/cartStore';
+import { useModalsStore } from '../stores/modalStore';
 
 export default {
   data() {

@@ -73,22 +73,12 @@
 
 <script>
 import axios from "axios";
-import { useModalsStore } from '../stores/myStore';
-import { useUserStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/modalStore';
+import { useUserStore } from '../stores/userStore';
 import { useRouter } from "vue-router";
 import { ref, reactive, onMounted, computed } from 'vue';
-import OrderPage from './OrderPage.vue';
-import HelpPage from './HelpPage.vue';
-import NewsletterPage from './NewsletterPage.vue';
-import VouchersPage from './VouchersPage.vue';
 
 export default {
-  components: {
-    OrderPage,
-    HelpPage,
-    NewsletterPage,
-    VouchersPage,
-  },
   setup() {
     const userStore = useUserStore();
     const modalStore = useModalsStore();

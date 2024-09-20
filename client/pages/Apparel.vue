@@ -35,9 +35,9 @@
 
 <script>
 import axios from "axios";
-import { useUserStore } from '../stores/myStore';
-import { useCartStore } from '../stores/myStore';
-import { useModalsStore } from '../stores/myStore';
+import { useUserStore } from '../stores/userStore';
+import { useCartStore } from '../stores/cartStore';
+import { useModalsStore } from '../stores/modalStore';
 import { determineProductType } from '../stores/productTypeMapping'; // Import the mapping
 
 

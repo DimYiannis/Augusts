@@ -9,25 +9,31 @@
           </svg>
         </button>
       </div>
-      <div class="order-list" v-if="orders.length > 0">
-        <div v-for="order in orders" :key="order.id" class="order-item">
+      <div v-if="orderStore.isLoading" class="spinner-wrapper">
+        <Spinner />
+      </div>
+      <div v-else-if="orderStore.orders.length > 0" class="order-list">
+        <div v-for="order in orderStore.orders" :key="order._id" class="order-item">
           <div class="order-info">
-            <p class="order-date">Order Date: {{ formatDate(order.date) }}</p>
-            <p class="order-number">Order #: {{ order.id }}</p>
+            <p class="order-date">Order Date: {{ formatDate(order.createdAt) }}</p>
+            <p class="order-number">Order #: {{ order._id }}</p>
           </div>
           <div class="order-products">
-            <div v-for="product in order.products" :key="product.id" class="product-item">
+            <div v-for="product in order.orderItems" :key="product.product" class="product-item">
               <img :src="product.image" :alt="product.name" class="product-image">
               <div class="product-details">
                 <p class="product-name">{{ product.name }}</p>
                 <p class="product-price">{{ formatPrice(product.price) }}</p>
-                <p class="product-quantity">Quantity: {{ product.quantity }}</p>
+                <p class="product-quantity">Quantity: {{ product.amount }}</p>
               </div>
             </div>
           </div>
           <div class="order-total">
             <p>Total: {{ formatPrice(order.total) }}</p>
           </div>
+          <button @click="deleteOrder(order._id)" class="delete-button">
+            Delete Order
+          </button>
         </div>
       </div>
       <div v-else class="no-orders">
@@ -38,22 +44,17 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { onMounted } from 'vue';
+import { useOrderStore } from '../stores/orderStore';
+import Spinner from './Spinner.vue';
 
 export default {
+  components: {
+    Spinner
+  },
   emits: ['close'],
   setup() {
-    const orders = ref([]);
-
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/v1/orders', { withCredentials: true });
-        orders.value = response.data.orders;
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
+    const orderStore = useOrderStore();
 
     const formatDate = (dateString) => {
       return new Date(dateString).toLocaleDateString();
@@ -63,12 +64,21 @@ export default {
       return `$${price.toFixed(2)}`;
     };
 
-    onMounted(fetchOrders);
+    const deleteOrder = async (orderId) => {
+      if (confirm('Are you sure you want to delete this order?')) {
+        await orderStore.deleteOrder(orderId);
+      }
+    };
+
+    onMounted(() => {
+      orderStore.fetchOrders();
+    });
 
     return {
-      orders,
+      orderStore,
       formatDate,
       formatPrice,
+      deleteOrder,
     };
   }
 }
@@ -116,7 +126,7 @@ export default {
 }
 
 .product-image {
-  @apply w-16 h-16 object-cover rounded mr-4;
+  @apply w-24 h-24 object-cover rounded mr-4; /* Increased size for better visibility */
 }
 
 .product-details {
@@ -137,5 +147,22 @@ export default {
 
 .no-orders {
   @apply flex items-center justify-center h-full text-gray-500;
+}
+
+.loader-container {
+  @apply flex items-center justify-center h-full;
+}
+
+.loader {
+  @apply w-12 h-12 border-4 border-gray-200 rounded-full animate-spin;
+  border-top-color: #3498db;
+}
+
+.spinner-wrapper {
+  @apply flex-1 flex items-center justify-center;
+}
+
+.delete-button {
+  @apply mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200;
 }
 </style>

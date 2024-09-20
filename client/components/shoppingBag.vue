@@ -91,13 +91,18 @@
           </div>
 
             <!--the cost-->
-            <div class=" costs">
-              <div class="total-items">Total Items: {{ totalItems }}</div>
-              <div class="total-price">Total Price: {{ totalPrice }}$</div>
+            <div class="costs">
+              <div class="total-items">
+                <span>Total Items:</span>
+                <span>{{ totalItems }}</span>
+              </div>
+              <div class="total-price">
+                <span>Total Price:</span>
+                <span>${{ totalPrice.toFixed(2) }}</span>
+              </div>
 
-              <button @click="order"
-               class="costbtn" :disabled="isOrdering">
-                Order
+              <button @click="order" class="costbtn" :disabled="isOrdering">
+                {{ isOrdering ? 'Processing...' : 'Order' }}
               </button>
             </div>
 
@@ -108,7 +113,7 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import { useCartStore } from '../stores/myStore';
-import { useModalsStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/modalStore';
 
 
 export default {

@@ -79,8 +79,8 @@
 
 <script>
 import { computed, onMounted } from 'vue';
-import { useModalsStore } from '../stores/myStore';
-import { useCartStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/modalStore';
+import { useCartStore } from '../stores/cartStore';
 
 export default {
   setup() {

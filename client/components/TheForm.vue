@@ -45,7 +45,7 @@
 
 <script>
 import axios from "axios";
-import { useModalsStore } from '../stores/myStore';
+import { useModalsStore } from '../stores/modalStore';
 
 export default {
   data() {

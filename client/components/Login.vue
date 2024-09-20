@@ -56,8 +56,8 @@
 </template>
 
 <script>
-import { useUserStore } from '../stores/myStore';
-import { useModalsStore } from '../stores/myStore';
+import { useUserStore } from '../stores/userStore';
+import { useModalsStore } from '../stores/modalStore';
 
 import axios from "axios";
 export default {
