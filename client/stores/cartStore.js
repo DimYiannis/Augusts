@@ -58,6 +58,7 @@ export const useCartStore = defineStore("cart", {
         const { _id: productId, productType, size } = item;
         const payload = { productId, productType, size };
         console.log("Payload being sent:", payload);
+        
         const response = await axios.post(
           "http://localhost:5000/api/v1/cart",
           payload,

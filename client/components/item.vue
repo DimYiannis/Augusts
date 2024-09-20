@@ -117,12 +117,17 @@ methods: {
     }
   },
   addToFav(item) {
-    const itemWithSize = {
-        ...item,
-        size: this.chosenSize
-      };
+    if (!this.chosenSize) {
+      alert('Please select a size before adding to cart');
+      return;
+    }
+    const itemToAdd = {
+      _id: item._id,
+      productType: item.productType,
+      size: this.chosenSize,
+    };
     const modalStore = useModalsStore();
-    modalStore.addToFav(itemWithSize)
+    modalStore.addToFav(itemToAdd);
   }
 }
 };

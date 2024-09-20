@@ -19,7 +19,7 @@ const productModelMap = {
 };
 
 const createlike = async (req, res) => {
-  const { productId, productType } = req.body;
+  const { productId, productType, size } = req.body;
 
   try {
      // Ensure req.user is defined
@@ -35,22 +35,20 @@ const createlike = async (req, res) => {
       );
     }
 
-    // Check if the user has already liked the post
+    // Check if the user has already liked the item
     const existingLike = await Like.findOne({
       user: req.user.userId,
-      product: productId, productType 
+      product: productId, 
+      productType,
+      size
     });
     console.log("Existing Like:", existingLike);
 
     if (existingLike) {
-      // User has already liked the post, so unlike it
+      // User has already liked the item, so unlike it
       await existingLike.remove();
-
-      res.status(StatusCodes.OK).json({
-        message: "Like removed successfully!",
-      });
     } else {
-      // User has not liked the post, so create a new like
+      // User has not liked the item, so create a new like
       const dbProduct = await ProductModel.findById(productId);
 
       if (!dbProduct) {
@@ -63,6 +61,7 @@ const createlike = async (req, res) => {
         user: req.user.userId,
         product: dbProduct._id,
         productType,
+        size,
       });
       await newLike.save();
 
@@ -95,6 +94,7 @@ const getAllLikes = async (req, res) => {
           user: like.user,
           product: like.product,
           productType: like.productType,
+          size: like.size,
           createdAt: like.createdAt,
           updatedAt: like.updatedAt,
           productDetails: productDetails || null,

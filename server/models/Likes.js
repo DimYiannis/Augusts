@@ -23,6 +23,6 @@ const LikeSchema = mongoose.Schema(
 );
 
 //  uniqueness based on user and post
-LikeSchema.index({ user: 1, product: 1, productType: 1 }, { unique: true });
+LikeSchema.index({ user: 1, product: 1, productType: 1, size: 1 }, { unique: true });
 
 module.exports = mongoose.model("Likes", LikeSchema);

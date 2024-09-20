@@ -39,10 +39,8 @@ export const useModalsStore = defineStore("modal", {
         const response = await axios.get("http://localhost:5000/api/v1/likes", {
           withCredentials: true,
         });
-        console.log("Favorite items fetched successfully:", response.data);
-        this.favItems = Array.isArray(response.data.items)
-          ? response.data.items
-          : [];
+        this.favItems = response.data.likes;
+          
       } catch (error) {
         console.error("Error fetching favorite items:", error);
       } finally {
@@ -52,20 +50,40 @@ export const useModalsStore = defineStore("modal", {
     async addToFav(item) {
       this.isAddingToFav = true;
       try {
+        // Ensure we have a valid _id
+        if (!item._id || typeof item._id !== 'string' || item._id.length !== 24) {
+          throw new Error('Invalid product ID');
+        }
+
+        const { _id: productId, productType, size } = item;
+        const payload = { productId, productType, size };
+        console.log("Payload being sent:", payload);
+
         const response = await axios.post(
           "http://localhost:5000/api/v1/likes",
-          item,
+          payload,
           { withCredentials: true }
         );
-        console.log("Item added to favorites successfully:", response.data);
-        const index = this.favItems.findIndex(
-          (favItem) => favItem.id === item.id && favItem.size === item.size
-        );
-        if (index === -1) {
-          this.favItems.push({ ...item });
+        console.log("Response from server:", response.data);
+
+        if (response.data && response.data.item) {
+          const newItem = response.data.item;
+          const index = this.favItems.findIndex(
+            (favItem) => favItem._id === newItem._id
+          );
+          if (index !== -1) {
+            this.favItems[index] = newItem;
+          } else {
+            this.favItems.push(newItem);
+          }
+          console.log("Item added to favorites successfully:", newItem);
+        } else {
+          console.error("Unexpected response structure:", response.data);
+          throw new Error('Unexpected response structure from server');
         }
       } catch (error) {
         console.error("Error adding item to favorites:", error);
+        // You might want to set an error state here or show a notification to the user
       } finally {
         this.isAddingToFav = false;
       }
