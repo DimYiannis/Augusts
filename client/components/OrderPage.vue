@@ -46,12 +46,8 @@
 <script>
 import { onMounted } from 'vue';
 import { useOrderStore } from '../stores/orderStore';
-import Spinner from './Spinner.vue';
 
 export default {
-  components: {
-    Spinner
-  },
   emits: ['close'],
   setup() {
     const orderStore = useOrderStore();
