@@ -112,7 +112,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue';
-import { useCartStore } from '../stores/myStore';
+import { useCartStore } from '../stores/cartStore';
 import { useModalsStore } from '../stores/modalStore';
 
 

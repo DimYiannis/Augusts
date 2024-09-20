@@ -183,9 +183,9 @@
   <slot />
 </template>
 <script setup>
-import { useUserStore } from '../stores/myStore';
-import { useModalsStore } from '../stores/myStore';
-import { useCartStore } from '../stores/myStore';
+import { useUserStore } from '../stores/userStore';
+import { useModalsStore } from '../stores/modalStore';
+import { useCartStore } from '../stores/cartStore';
 import axios from "axios";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
