@@ -185,11 +185,21 @@ export const useCartStore = defineStore("cart", {
     async order() {
       this.isOrdering = true;
       try {
+        const payload = {
+          items: this.cartItems.map(item => ({
+            name: item.productDetails.name,
+            price: item.productDetails.price,
+            image: item.productDetails.image,
+            amount: item.quantity,
+            productId: item.productDetails._id
+          }))
+        };
+
+        console.log("Payload being sent:", payload);
+
         const response = await axios.post(
           "http://localhost:5000/api/v1/orders",
-          {
-            items: this.cartItems,
-          },
+          payload,
           { withCredentials: true }
         );
 
