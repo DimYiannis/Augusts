@@ -137,7 +137,7 @@ export default {
 }
 
 .fav {
-  @apply w-full max-w-[22rem] max-h-[80vh] flex flex-col;
+  @apply w-max max-w-[22rem] max-h-[80vh] flex flex-col;
 }
 
 .chosenitems {
