@@ -17,7 +17,11 @@ const LikeSchema = mongoose.Schema(
       type: String,
       required: true,
       enum: ['Sweats', 'Bottoms', 'Shirts','Accessories', 'Shoes', 'Jackets'] // product model names 
-    }
+    },
+    size: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
