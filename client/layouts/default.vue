@@ -1,5 +1,8 @@
 <!--bar with restricted access - no fav or shopping cart-->
 <template>
+  <!-- loading state
+  <LoadSpinner v-if="showHideSpinner" /> -->
+
   <header class="navbar">
     <div class="flex-1 basis-2/3 text-4xl text-black">
       <NuxtLink to="/">August's</NuxtLink>
@@ -66,6 +69,7 @@
       @mouseleave="showFavtip = false"
       class="headerbtn"
       @click="toggleFav"
+     :disabled="modalStore.isAddingToFav"
     >
       <h1 v-if="showFavtip" class="tooltip">Favorites</h1>
 
@@ -197,11 +201,16 @@ const cartStore = useCartStore();
 const showBar = ref(false);
 const showBagtip = ref(false);
 const showFavtip = ref(false);
+// const showHideSpinner = ref(true);
  
 // Fetch cart items when the component is mounted
 onMounted(async () => {
   try {
     await cartStore.fetchCartItems();
+
+    await modalStore.fetchFavItems();
+    // console.log(modalStore.favItems);
+    // showHideSpinner.value = false;
   } catch (error) {
     console.error("Failed to fetch cart items:", error);
   }

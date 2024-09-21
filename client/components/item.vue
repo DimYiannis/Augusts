@@ -127,7 +127,14 @@ methods: {
       size: this.chosenSize,
     };
     const modalStore = useModalsStore();
-    modalStore.addToFav(itemToAdd);
+
+    try {
+      modalStore.addToFav(itemToAdd);
+
+      modalStore.fetchFavItems();
+    } catch (error) {
+      console.error('Error adding item to favorites:', error);
+    }
   }
 }
 };

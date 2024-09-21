@@ -50,11 +50,6 @@ export const useModalsStore = defineStore("modal", {
     async addToFav(item) {
       this.isAddingToFav = true;
       try {
-        // Ensure we have a valid _id
-        if (!item._id || typeof item._id !== 'string' || item._id.length !== 24) {
-          throw new Error('Invalid product ID');
-        }
-
         const { _id: productId, productType, size } = item;
         const payload = { productId, productType, size };
         console.log("Payload being sent:", payload);
@@ -64,10 +59,13 @@ export const useModalsStore = defineStore("modal", {
           payload,
           { withCredentials: true }
         );
-        console.log("Response from server:", response.data);
+        console.log("Response from server:", response);
 
-        if (response.data && response.data.item) {
-          const newItem = response.data.item;
+        if (response.data) {
+         // Check if the item is in the response, either directly or nested
+          const newItem = response.data.like || response.data.item || item;
+          
+          // Add the new item to favItems, avoiding duplicates
           const index = this.favItems.findIndex(
             (favItem) => favItem._id === newItem._id
           );
@@ -78,8 +76,7 @@ export const useModalsStore = defineStore("modal", {
           }
           console.log("Item added to favorites successfully:", newItem);
         } else {
-          console.error("Unexpected response structure:", response.data);
-          throw new Error('Unexpected response structure from server');
+          throw new Error('Empty response data from server');
         }
       } catch (error) {
         console.error("Error adding item to favorites:", error);
@@ -88,19 +85,17 @@ export const useModalsStore = defineStore("modal", {
         this.isAddingToFav = false;
       }
     },
-    async removeFromFav(item) {
+    async removeFromFav(itemId) {
       this.isRemovingFromFav = true;
       try {
-        await axios.delete(`http://localhost:5000/api/v1/likes/${item.id}`, {
+        await axios.delete(`http://localhost:5000/api/v1/likes/${itemId}`, {
           withCredentials: true,
         });
         console.log("Item removed from favorites successfully");
-        const index = this.favItems.findIndex(
-          (favItem) => favItem.id === item.id && favItem.size === item.size
-        );
-        if (index !== -1) {
-          this.favItems.splice(index, 1);
-        }
+
+        // Remove the item from the local state
+        this.favItems = this.favItems.filter(item => item._id !== itemId);
+
       } catch (error) {
         console.error("Error removing item from favorites:", error);
       } finally {
