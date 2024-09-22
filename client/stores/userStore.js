@@ -8,7 +8,39 @@ export const useUserStore = defineStore("user", {
     user: null,
   }),
   actions: {
-    async login() {
+    async login(email, password) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/auth/login",
+          { email, password },
+          { withCredentials: true }
+        );
+        console.log(response.data);
+        this.user = response.data.user;
+        this.isLoggedIn = true;
+
+        // Note: We're not using router.push here anymore
+        return { success: true, message: "Welcome back!", user: this.user };
+      } catch (error) {
+        console.error("Error logging in:", error);
+        return { success: false, message: error.response?.data?.msg || "An error occurred during login" };
+      }
+    },
+    async logout() {
+      try {
+        const response = await axios.get("http://localhost:5000/api/v1/auth/logout", {
+          withCredentials: true,
+        });
+        console.log(response);
+        this.isLoggedIn = false;
+        this.user = null;
+        return { success: true, message: "Logged out successfully" };
+      } catch (error) {
+        console.error("Error logging out:", error);
+        return { success: false, message: error.response?.data?.msg || "An error occurred during logout" };
+      }
+    },
+    async getUser() {
       try {
         const response = await axios.get(
           "http://localhost:5000/api/v1/users/showUser",
@@ -21,10 +53,9 @@ export const useUserStore = defineStore("user", {
         console.error("Error fetching user information:", error);
       }
     },
-    logout() {
-      this.isLoggedIn = false;
-      this.user = null;
-    },
+  },
+  getters: {
+    isAdmin: (state) => state.user?.role === 'admin',
   },
   persist: piniaPersistConfig("userStore"),
 });

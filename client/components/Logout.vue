@@ -71,139 +71,106 @@
   <VouchersPage v-if="isVouchersPageVisible" @close="closeVouchersPage" />
 </template>
 
-<script>
-import axios from "axios";
-import { useModalsStore } from '../stores/modalStore';
-import { useUserStore } from '../stores/userStore';
-import { useRouter } from "vue-router";
+<script setup>
 import { ref, reactive, onMounted, computed } from 'vue';
+import { useUserStore } from '../stores/userStore';
+import { useModalsStore } from '../stores/modalStore';
+import { useRouter } from 'vue-router';
 
-export default {
-  setup() {
-    const userStore = useUserStore();
-    const modalStore = useModalsStore();
-    const router = useRouter();
-    const panel = ref(null);
-    const isDragging = ref(false);
-    const position = reactive({ x: 0, y: 0 });
-    const offset = reactive({ x: 0, y: 0 });
-    const isOrderPageVisible = ref(false);
-    const isHelpPageVisible = ref(false);
-    const isNewsletterPageVisible = ref(false);
-    const isVouchersPageVisible = ref(false);
+const userStore = useUserStore();
+const modalStore = useModalsStore();
+const router = useRouter();
 
-    const logout = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/v1/auth/logout", {
-          withCredentials: true,
-        });
-        console.log(response);
+const panel = ref(null);
+const isDragging = ref(false);
+const position = reactive({ x: 0, y: 0 });
+const offset = reactive({ x: 0, y: 0 });
 
-        userStore.logout();
-        closeLogout();
-        router.push("/");
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
+const isOrderPageVisible = ref(false);
+const isHelpPageVisible = ref(false);
+const isNewsletterPageVisible = ref(false);
+const isVouchersPageVisible = ref(false);
 
-    const closeLogout = () => {
-      modalStore.toggleLogout();
-    };
-
-    const startDrag = (event) => {
-      isDragging.value = true;
-      offset.x = event.clientX - position.x;
-      offset.y = event.clientY - position.y;
-      document.addEventListener('mousemove', drag);
-      document.addEventListener('mouseup', stopDrag);
-    };
-
-    const drag = (event) => {
-      if (isDragging.value) {
-        position.x = event.clientX - offset.x;
-        position.y = event.clientY - offset.y;
-      }
-    };
-
-    const stopDrag = () => {
-      isDragging.value = false;
-      document.removeEventListener('mousemove', drag);
-      document.removeEventListener('mouseup', stopDrag);
-    };
-
-    const showOrders = () => {
-      isOrderPageVisible.value = true;
-    };
-
-    const closeOrderPage = () => {
-      isOrderPageVisible.value = false;
-    };
-
-    const showHelp = () => {
-      isHelpPageVisible.value = true;
-    };
-
-    const closeHelpPage = () => {
-      isHelpPageVisible.value = false;
-    };
-
-    const showNewsletter = () => {
-      isNewsletterPageVisible.value = true;
-    };
-
-    const closeNewsletterPage = () => {
-      isNewsletterPageVisible.value = false;
-    };
-
-    const showVouchers = () => {
-      isVouchersPageVisible.value = true;
-    };
-
-    const closeVouchersPage = () => {
-      isVouchersPageVisible.value = false;
-    };
-
-    const greeting = computed(() => {
-      const hour = new Date().getHours();
-      if (hour < 12) return "Good morning";
-      if (hour < 18) return "Good afternoon";
-      return "Good evening";
-    });
-
-    onMounted(() => {
-      if (panel.value) {
-        const rect = panel.value.getBoundingClientRect();
-        position.x = (window.innerWidth - rect.width) / 2;
-        position.y = (window.innerHeight - rect.height) / 2;
-      }
-    });
-
-    return {
-      userStore,
-      logout,
-      closeLogout,
-      panel,
-      position,
-      startDrag,
-      drag,
-      stopDrag,
-      isOrderPageVisible,
-      showOrders,
-      closeOrderPage,
-      isHelpPageVisible,
-      showHelp,
-      closeHelpPage,
-      isNewsletterPageVisible,
-      showNewsletter,
-      closeNewsletterPage,
-      isVouchersPageVisible,
-      showVouchers,
-      closeVouchersPage,
-      greeting,
-    };
+const greeting = computed(() => {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+});
+const logout = async () => {
+  const result = await userStore.logout();
+  if (result.success) {
+    closeLogout();
+    router.push('/');
+  } else {
+    console.error("Logout failed:", result.message);
   }
-}
+};
+
+const closeLogout = () => {
+  modalStore.showLogout = false;
+};
+
+const startDrag = (event) => {
+  isDragging.value = true;
+  offset.x = event.clientX - position.x;
+  offset.y = event.clientY - position.y;
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('mouseup', stopDrag);
+};
+
+const drag = (event) => {
+  if (isDragging.value) {
+    position.x = event.clientX - offset.x;
+    position.y = event.clientY - offset.y;
+  }
+};
+
+const stopDrag = () => {
+  isDragging.value = false;
+  document.removeEventListener('mousemove', drag);
+  document.removeEventListener('mouseup', stopDrag);
+};
+const showOrders = () => {
+  isOrderPageVisible.value = true;
+};
+
+const closeOrderPage = () => {
+  isOrderPageVisible.value = false;
+};
+
+const showHelp = () => {
+  isHelpPageVisible.value = true;
+};
+
+const closeHelpPage = () => {
+  isHelpPageVisible.value = false;
+};
+
+const showNewsletter = () => {
+  isNewsletterPageVisible.value = true;
+};
+
+const closeNewsletterPage = () => {
+  isNewsletterPageVisible.value = false;
+};
+
+const showVouchers = () => {
+  isVouchersPageVisible.value = true;
+};
+
+const closeVouchersPage = () => {
+  isVouchersPageVisible.value = false;
+};
+
+onMounted(() => {
+  console.log(userStore.user);
+  if (panel.value) {
+    const rect = panel.value.getBoundingClientRect();
+    position.x = (window.innerWidth - rect.width) / 2;
+    position.y = (window.innerHeight - rect.height) / 2;
+  }
+});
 </script>
 
 <style scoped>

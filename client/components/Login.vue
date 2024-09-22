@@ -55,63 +55,46 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore';
 import { useModalsStore } from '../stores/modalStore';
 
-import axios from "axios";
-export default {
-  data() {
-    return {
-      password: "",
-      email: "",
-      passwordError: "",
-    };
-  },
+const router = useRouter();
+const userStore = useUserStore();
+const modalStore = useModalsStore();
 
-  methods: {
-    login() {
-      const userStore = useUserStore();
- 
-      axios
-        .post(
-          "http://localhost:5000/api/v1/auth/login",
-          {
-            email: this.email,
-            password: this.password,
-          },
-          { withCredentials: true }
-        ) //Without this option, cookies will not be sent.
+const email = ref('');
+const password = ref('');
+const passwordError = ref('');
 
-        .then((response) => {
-          console.log(response);
-          console.log(response.data.user);
-          alert("Welcome back!");
-          userStore.login();
-          this.closeLogin();        
-        })
-        .catch((error) => {
-          console.error("Registration error:", error);
-          // Handle the error and provide feedback to the user.
-          this.errormsg = error.response.data.msg;
+const login = async () => {
+  const result = await userStore.login(email.value, password.value);
+  
+  userStore.getUser();
+  closeLogin();
+  if (result.success && result.user) {
+    alert(result.message);
+    // Handle routing based on user role
+    if (result.user.role === 'admin') {
+      router.push('/admin/dashboard');
+    } else {
+      router.push('/default');
+    }
+  } else {
+    passwordError.value = result.message || "An error occurred during login";
+    setTimeout(() => {
+      passwordError.value = '';
+    }, 5000);
+  }
+};
 
-          // show the tooltip
-          this.showError = true;
-          // hide the tooltip after 5 seconds
-          setTimeout(() => {
-            this.showError = false;
-          }, 5000);
-        })
-    },
+const closeLogin = () => {
+  modalStore.showLogin = false;
+};
 
-    closeLogin() {
-      const modalStore = useModalsStore(); 
-      modalStore.showLogin=false;
-    },
-    ToggleSignup() {
-      const modalStore = useModalsStore(); 
-      modalStore.toggleSignUp();
-    },
-  },
+const toggleSignup = () => {
+  modalStore.toggleSignUp();
 };
 </script>
