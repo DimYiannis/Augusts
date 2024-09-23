@@ -1,7 +1,7 @@
 <template>
   <div class="invbackdrop" @click.self="closeLogin">
     <div
-      class="p-1 rounded-lg object-center z-10 mt-8 relative pt-3 top-4  bg-white tablet:w-fit tablet:h-fit place-self-center w-screen h-fit"
+      class="p-1 rounded-lg object-center z-10 mt-8 relative pt-3 top-4 bg-white tablet:w-fit tablet:h-fit place-self-center w-screen h-fit"
     >
       <div class="flex justify-end p-3 h-10">
         <button class="flex w-fit rounded-3xl p-2" @click="closeLogin">
@@ -28,7 +28,7 @@
           Log in to access your dashboard.
           <br />
           Don't have an account yet?
-          <a class="underline cursor-pointer" @click="ToggleSignup">Sign up</a>
+          <a class="underline cursor-pointer" @click="toggleSignup">Sign up</a>
         </h2>
 
         <label class="label">Email:</label>
@@ -41,7 +41,7 @@
           v-model="password"
           placeholder="Password"
         />
-        <div v-if="passwordError" class="error">{{ passwordError }}</div>
+        <div v-if="error" class="error text-red-500 mt-2">{{ error }}</div>
 
         <button class="bg-[#2b2b2b] w-full rounded-none m-4 text-white h-10">
           Log in
@@ -67,25 +67,29 @@ const modalStore = useModalsStore();
 
 const email = ref('');
 const password = ref('');
-const passwordError = ref('');
+const error = ref('');
 
 const login = async () => {
-  const result = await userStore.login(email.value, password.value);
-  
-  userStore.getUser();
-  closeLogin();
-  if (result.success && result.user) {
-    alert(result.message);
-    // Handle routing based on user role
-    if (result.user.role === 'admin') {
-      router.push('/admin/dashboard');
+  try {
+    const result = await userStore.login(email.value, password.value);
+    if (result) {
+      const userResult = await userStore.getUser();
+      if (userResult) {
+       
+        closeLogin();
+      
+      } else {
+        error.value = "Failed to fetch user data";
+      }
     } else {
-      router.push('/default');
+      error.value = "Invalid email or password";
     }
-  } else {
-    passwordError.value = result.message || "An error occurred during login";
+  } catch (err) {
+    console.error("Login error:", err);
+    error.value = "An unexpected error occurred";
+  } finally {
     setTimeout(() => {
-      passwordError.value = '';
+      error.value = '';
     }, 5000);
   }
 };
