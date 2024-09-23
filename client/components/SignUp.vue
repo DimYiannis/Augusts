@@ -124,28 +124,24 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { useUserStore } from '../stores/userStore';
 import { useModalsStore } from '../stores/modalStore';
 
-export default {
-    data() {
-        return {
-          
-        }
-    },
-    methods: {
-        closeSignup() {
-            const modalStore = useModalsStore(); 
-            modalStore.showSignUp=false;
-        },
-        ToggleLogin() {
-            const modalStore = useModalsStore(); 
-            modalStore.toggleLogin();
-        },
-    }, 
-    
-}
+const userStore = useUserStore();
+const modalStore = useModalsStore();
 
+const closeSignup = () => {
+  modalStore.showSignUp = false;
+};
 
+const toggleLogin = () => {
+  modalStore.toggleLogin();
+};
+
+const loggedin = () => {
+  // Implement your login logic here
+  console.log('User logged in');
+};
 </script>
 
