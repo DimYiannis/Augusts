@@ -1,7 +1,8 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage> </NuxtPage>
+  <NuxtLayout >
+    <NuxtPage />
   </NuxtLayout>
-  <!--footer-->
-  <footerSection class="" />
+  <footerSection />
 </template>
+
+
