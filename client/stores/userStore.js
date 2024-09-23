@@ -11,7 +11,7 @@ export const useUserStore = defineStore("user", {
     async login(email, password) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/v1/auth/login",
+          "https://augusts.onrender.com/api/v1/auth/login",
           { email, password },
           { withCredentials: true }
         );
@@ -28,7 +28,7 @@ export const useUserStore = defineStore("user", {
     },
     async logout() {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/auth/logout", {
+        const response = await axios.get("https://augusts.onrender.com/api/v1/auth/logout", {
           withCredentials: true,
         });
         console.log(response);
@@ -42,20 +42,25 @@ export const useUserStore = defineStore("user", {
     },
     async getUser() {
       try {
+        console.log("Fetching user data...");
+
         const response = await axios.get(
-          "http://localhost:5000/api/v1/users/showUser",
+          "https://augusts.onrender.com/api/v1/users/showUser",
           { withCredentials: true }
         );
-        console.log(response.data);
-        this.user = response.data.user;
-        this.isLoggedIn = true;
+        console.log("Get user response:", response.data);
+        if (response.data && response.data.user) {
+          this.user = response.data.user;
+          this.isLoggedIn = true;
+          return { user: this.user };
+        } else {
+          console.error("Invalid response structure:", response.data);
+          throw new Error("Invalid response from server");
+        }
       } catch (error) {
         console.error("Error fetching user information:", error);
       }
     },
-  },
-  getters: {
-    isAdmin: (state) => state.user?.role === 'admin',
   },
   persist: piniaPersistConfig("userStore"),
 });

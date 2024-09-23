@@ -31,7 +31,7 @@ const apparelRouter = require("./routes/apparelRoutes");
 const likesRouter = require('./routes/likesRoutes');
 const cartRouter = require('./routes/cartRoutes');
 const orderRouter = require('./routes/ordersRoutes');
-
+const adminRouter = require('./routes/adminRoutes');
 //middleware
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -52,7 +52,7 @@ app.use(fileUpload());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', 'https://augustsv2.netlify.app'],
     credentials: true,
     allowedHeaders: ['Content-Type','Authorization']
   })
@@ -73,8 +73,8 @@ app.get("/api/v1", (req, res) => {
     path: '/',
     expires: new Date('2024-12-24T17:20:31.000Z'),
     httpOnly: true,
-    //secure: true, // Set to true for HTTPS connections, production
-    secure: false, // For development, set to false
+    secure: true, // Set to true for HTTPS connections, production
+    // secure: false, // For development, set to false
     sameSite: 'None', // Set to 'None' for cross-origin requests
   });
 });
@@ -94,7 +94,7 @@ app.use("/api/v1/apparel", apparelRouter);
 app.use("/api/v1/likes", likesRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/orders", orderRouter);
-
+app.use("/api/v1/admin", adminRouter);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
@@ -108,7 +108,7 @@ const start = async () => {
     // Periodically send a keep-alive request every 5 minutes (adjust as needed)
     setInterval(() => {
       
-      axios.get('http://localhost:5000/api/v1/keep-alive')
+      axios.get('https://augusts.onrender.com/api/v1/keep-alive')
       .then(response => console.log(response.data))
       .catch(error => console.error('Keep-alive failed', error));
 

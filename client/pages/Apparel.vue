@@ -53,7 +53,7 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get("http://localhost:5000/api/v1/apparel");
+      const response = await axios.get("https://augusts.onrender.com/api/v1/apparel");
 
       if (response.data && response.data.jackets && response.data.accessories && response.data.shoes) {
         this.jackets = response.data.jackets.map(product => ({
