@@ -1,20 +1,20 @@
 <template>
   <div class="invbackdrop" @click.self="closeCart">
     <div class="shoppings" @mouseenter="showlog">
-      <!--the item-->
-      <div class="chosenitems">
-        <div class="text-center font-semibold">
-          <h2>Shopping Cart</h2>
-        </div>
 
-        <!-- Loader while fetching items -->
-        <div
+      <!-- Loader while fetching items -->
+      <div
           v-if="isFetchingCart || isRemovingFromCart"
           class="flex justify-center mt-10"
         >
           <Spinner />
         </div>
-
+        
+      <!--the item-->
+      <div class="chosenitems">
+        <div class="text-center font-semibold">
+          <h2>Shopping Cart</h2>
+        </div>
         <div v-else>
           <div class="h-full mt-4">
             <div
