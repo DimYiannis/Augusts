@@ -134,7 +134,7 @@
           <!-- Loader while fetching items -->
           <div
             v-if="isFetchingCart || isRemovingFromCart"
-            class="flex justify-center mt-10"
+            class="flex justify-center"
           >
             <Progress />
           </div>
@@ -145,7 +145,7 @@
           <!-- Loader while fetching items -->
           <div
             v-if="isFetchingCart || isRemovingFromCart"
-            class="flex justify-center mt-10"
+            class="flex justify-center"
           >
             <Progress />
           </div>
