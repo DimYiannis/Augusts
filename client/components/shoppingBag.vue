@@ -136,7 +136,7 @@
             v-if="isFetchingCart || isRemovingFromCart"
             class="flex justify-center mt-10"
           >
-            <Spinner />
+            <Spinner class="w-4 h-4 mr-2"/> Loading...
           </div>
           <span v-else>{{ totalItems }}</span>
         </div>
@@ -147,7 +147,7 @@
             v-if="isFetchingCart || isRemovingFromCart"
             class="flex justify-center mt-10"
           >
-            <Spinner />
+            <Spinner class="w-4 h-4 mr-2" /> Loading...
           </div>
           <span v-else>${{ totalPrice.toFixed(2) }}</span>
         </div>
