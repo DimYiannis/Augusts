@@ -22,8 +22,8 @@ const createlike = async (req, res) => {
   const { productId, productType, size } = req.body;
 
   try {
-     // Ensure req.user is defined
-     if (!req.user || !req.user.userId) {
+    // Ensure req.user is defined
+    if (!req.user || !req.user.userId) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'User not authenticated' });
     }
     
@@ -36,17 +36,24 @@ const createlike = async (req, res) => {
     }
 
     // Check if the user has already liked the item
-    const existingLike = await Like.findOne({
+    const likeQuery = {
       user: req.user.userId,
-      product: productId, 
+      product: productId,
       productType,
-      size
-    });
+    };
+    
+    // Only include size in the query if it's not an accessory
+    if (productType !== 'Accessories') {
+      likeQuery.size = size;
+    }
+
+    const existingLike = await Like.findOne(likeQuery);
     console.log("Existing Like:", existingLike);
 
     if (existingLike) {
       // User has already liked the item, so unlike it
       await existingLike.remove();
+      res.status(StatusCodes.OK).json({ message: "Like removed successfully!" });
     } else {
       // User has not liked the item, so create a new like
       const dbProduct = await ProductModel.findById(productId);

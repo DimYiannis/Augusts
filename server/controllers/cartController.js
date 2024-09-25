@@ -22,8 +22,8 @@ const addToCart = async (req, res) => {
   const { productId, productType, size } = req.body;
   
   try {
-     // Ensure req.user is defined
-     if (!req.user || !req.user.userId) {
+    // Ensure req.user is defined
+    if (!req.user || !req.user.userId) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'User not authenticated' });
     }
     
@@ -42,12 +42,18 @@ const addToCart = async (req, res) => {
     }
 
     // Check if the user has already added the item with the same size
-    const existingItem = await Cart.findOne({
+    const cartQuery = {
       user: req.user.userId,
       product: productId, 
       productType,
-      size
-    });
+    };
+
+    // Only include size in the query if it's not an accessory
+    if (productType !== 'Accessories') {
+      cartQuery.size = size;
+    }
+
+    const existingItem = await Cart.findOne(cartQuery);
 
     if (existingItem) {
       // Increment quantity if item already exists
@@ -64,7 +70,8 @@ const addToCart = async (req, res) => {
         user: req.user.userId,
         product: dbProduct._id,
         productType,
-        size, 
+        // Only include size if it's not an accessory
+        ...(productType !== 'Accessories' && { size }),
         quantity: 1,
       });
       await newItem.save();
@@ -75,7 +82,6 @@ const addToCart = async (req, res) => {
       });
     }
   } catch (error) {
-    //  validation errors or the post not being found
     console.error(error);
     res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
   }
@@ -123,7 +129,6 @@ const deleteCartItem = async (req, res) => {
   const { id: itemId } = req.params;
 
   try {
-
     if (!req.user || !req.user.userId) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'User not authenticated' });
     }
@@ -164,9 +169,9 @@ const updateCartItem = async (req, res) => {
       throw new CustomError.BadRequestError("Quantity must be greater than zero");
     }
 
-     // Log the incoming request data for debugging
-     console.log(`Updating cart item with ID: ${itemId}`);
-     console.log(`Requested quantity: ${quantity}`); 
+    // Log the incoming request data for debugging
+    console.log(`Updating cart item with ID: ${itemId}`);
+    console.log(`Requested quantity: ${quantity}`); 
 
     // Find the cart item by ID
     const item = await Cart.findById(itemId);
@@ -191,7 +196,6 @@ const updateCartItem = async (req, res) => {
     res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   addToCart,
