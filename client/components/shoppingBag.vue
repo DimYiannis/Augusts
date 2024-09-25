@@ -11,7 +11,7 @@
         </div>
 
       <!--the item-->
-      <div v-elseclass="chosenitems">
+      <div v-else class="chosenitems">
         <div class="text-center font-semibold">
           <h2>Shopping Cart</h2>
         </div>
