@@ -9,13 +9,13 @@
         >
           <Spinner />
         </div>
-        
+
       <!--the item-->
-      <div class="chosenitems">
+      <div v-elseclass="chosenitems">
         <div class="text-center font-semibold">
           <h2>Shopping Cart</h2>
         </div>
-        <div v-else>
+        <div >
           <div class="h-full mt-4">
             <div
               v-if="cartItems.length === 0"
