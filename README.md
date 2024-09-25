@@ -25,4 +25,5 @@ August's is a full-stack mock-up e-commerce website built with Nuxt.js, Tailwind
 You can explore the site using the demo account:
 
 Email: user@email.com
+
 Password: user
