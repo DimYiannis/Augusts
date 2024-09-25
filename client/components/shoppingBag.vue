@@ -146,63 +146,78 @@
   </div>
 </template>
 
-<script>
-import { ref, computed, onMounted } from "vue";
-import { useCartStore } from "../stores/cartStore";
-import { useModalsStore } from "../stores/modalStore";
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useCartStore } from '../stores/cartStore';
+import { useModalsStore } from '../stores/modalStore';
 
-export default {
-  setup() {
-    const cartStore = useCartStore();
-    const modalStore = useModalsStore();
+const cartStore = useCartStore();
+const modalStore = useModalsStore();
 
-    // Using computed to get reactive values from store
-    const totalItems = computed(() => cartStore.totalItems);
-    const totalPrice = computed(() => cartStore.totalPrice);
-    const cartItems = computed(() => cartStore.cartItems);
+const error = ref(null);
 
-    // Fetch cart items when the component is mounted
-    onMounted(async () => {
-      console.log("ShoppingBag component mounted, fetching cart items...");
-      await cartStore.fetchCartItems();
-    });
+// Fetch cart items when the component is mounted
+onMounted(async () => {
+  try {
+    console.log("ShoppingBag component mounted, fetching cart items...");
+    await cartStore.fetchCartItems();
+  } catch (err) {
+    console.error('Error fetching cart items:', err);
+    error.value = 'Failed to load cart items. Please try again later.';
+  }
+});
 
-    const closeCart = () => {
-      modalStore.showCart = false;
-    };
+const cartItems = computed(() => {
+  try {
+    return cartStore.cartItems || [];
+  } catch (err) {
+    console.error('Error accessing cartItems:', err);
+    error.value = 'Error loading cart items.';
+    return [];
+  }
+});
 
-    const removeCartItem = async (itemId) => {
-      try {
-        console.log("Removing item:", itemId);
-        // Call the removeCartItem method from the store
-        await cartStore.removeCartItem(itemId);
-        console.log("Item removed, fetching updated cart items");
-        // Fetch the updated cart items
-        await cartStore.fetchCartItems();
-        console.log("Cart items fetched");
-      } catch (error) {
-        console.error("Failed to delete item", error);
-      } finally {
-        // Close the cart after removing the item
-        closeCart();
-        console.log("Cart closed");
-      }
-    };
+const totalItems = computed(() => {
+  try {
+    return cartStore.totalItems;
+  } catch (err) {
+    console.error('Error calculating total items:', err);
+    return 0;
+  }
+});
 
-    return {
-      totalItems,
-      totalPrice,
-      cartItems: cartStore.cartItems,
-      isOrdering: computed(() => cartStore.isOrdering),
-      isFetchingCart: computed(() => cartStore.isFetchingCart),
-      isRemovingFromCart: computed(() => cartStore.isRemovingFromCart),
-      order: cartStore.order,
-      addToCart: cartStore.addToCart,
-      patchCart: cartStore.patchCart,
-      decrementCart: cartStore.decrementCart,
-      removeCartItem, // Return removeCartItem so it can be used in the template
-      closeCart, // Return closeCart so it can be used in the template if needed
-    };
-  },
+const totalPrice = computed(() => {
+  try {
+    return cartStore.totalPrice;
+  } catch (err) {
+    console.error('Error calculating total price:', err);
+    return 0;
+  }
+});
+
+const closeCart = () => {
+  modalStore.showCart = false;
 };
+
+const removeCartItem = async (itemId) => {
+  try {
+    console.log("Removing item:", itemId);
+    await cartStore.removeCartItem(itemId);
+    console.log("Item removed, fetching updated cart items");
+    await cartStore.fetchCartItems();
+    console.log("Cart items fetched");
+  } catch (error) {
+    console.error("Failed to delete item", error);
+    error.value = 'Failed to remove item from cart. Please try again.';
+  }
+};
+
+const isOrdering = computed(() => cartStore.isOrdering);
+const isFetchingCart = computed(() => cartStore.isFetchingCart);
+const isRemovingFromCart = computed(() => cartStore.isRemovingFromCart);
+
+// Expose necessary methods and computed properties
+const order = () => cartStore.order();
+const patchCart = (itemId, newQuantity) => cartStore.patchCart(itemId, newQuantity);
+const decrementCart = (itemId) => cartStore.decrementCart(itemId);
 </script>
