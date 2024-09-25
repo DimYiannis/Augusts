@@ -20,8 +20,10 @@ const CartSchema = mongoose.Schema(
     },
     size: {
       type: String,
-      required: true,
-      enum: ['S', 'M', 'L', 'XL', 'XXL', null], 
+      enum: ['S', 'M', 'L', 'XL', 'XXL', null],
+      required: function() {
+        return this.productType !== 'Accessories';
+      } 
     },
     quantity: {
       type: Number,
