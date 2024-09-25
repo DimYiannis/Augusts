@@ -2,7 +2,8 @@
 
 Welcome to August's, the online clothing platform where fashion meets functionality! 🛍️
 
-<img width="1316" alt="August's Clothing" src="https://your-image-url.com/image.png">
+![image](https://github.com/user-attachments/assets/c70e0566-5649-47bc-be0b-661caa66cf4e)
+
 
 ##Overview
 
