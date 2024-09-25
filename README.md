@@ -1,23 +1,11 @@
-# August-s
- 
-August's - Mock Up Clothing Website (Version 2)
+August's Mock Up Clothing Website (Version 2)
 Overview
-August's is a full-stack mock-up clothing website designed to provide a realistic online shopping experience. This version builds upon the initial frontend-only version by integrating a robust backend, enhancing user interaction, and providing a seamless shopping experience.
+August's Mock Up Clothing Website is a full-stack e-commerce platform that provides users with a realistic online shopping experience. It offers a dynamic product catalog, shopping cart functionality, secure user authentication, and a responsive design to ensure an optimal experience across all devices. This version enhances the initial front-end-only setup by integrating a robust backend and admin management features.
 
 Features
-Product Catalog: Browse through a variety of clothing items with detailed descriptions and high-quality images.
-Shopping Cart: Add items to your cart, review your selections, and proceed to checkout.
-User Authentication: Securely register, log in, and log out.
-Order Management: View and manage your past orders.
-Responsive Design: Fully responsive layout for a consistent experience on desktops, tablets, and mobile devices.
-Admin Panel: Manage products, orders, and users from a dedicated admin dashboard.
-Technologies Used
-Frontend:
-Nuxt.js: Vue.js framework for building server-rendered applications.
-Tailwind CSS: Utility-first CSS framework for rapid UI development.
-Pinia: State management library for Vue.js.
-Backend:
-Node.js: JavaScript runtime built on Chrome's V8 JavaScript engine.
-Express.js: Fast, unopinionated, minimalist web framework for Node.js.
-Database:
-MongoDB: NoSQL database for storing and retrieving data.
+Product Catalog: Browse a variety of clothing items with detailed descriptions and high-quality images.
+Shopping Cart: Add items to your cart, adjust quantities, review selections, and proceed to checkout.
+User Authentication: Secure user registration, login, and logout system.
+Order Management: Track and manage past orders from a user account.
+Responsive Design: Works seamlessly on desktops, tablets, and mobile devices.
+Admin Panel: Admins can manage products, orders, and users through a dedicated dashboard.
