@@ -1,11 +1,18 @@
-August's Mock Up Clothing Website (Version 2)
-Overview
-August's Mock Up Clothing Website is a full-stack e-commerce platform that provides users with a realistic online shopping experience. It offers a dynamic product catalog, shopping cart functionality, secure user authentication, and a responsive design to ensure an optimal experience across all devices. This version enhances the initial front-end-only setup by integrating a robust backend and admin management features.
+#August's Mock Up Clothing Website (Version 2)
 
-Features
-Product Catalog: Browse a variety of clothing items with detailed descriptions and high-quality images.
-Shopping Cart: Add items to your cart, adjust quantities, review selections, and proceed to checkout.
-User Authentication: Secure user registration, login, and logout system.
-Order Management: Track and manage past orders from a user account.
-Responsive Design: Works seamlessly on desktops, tablets, and mobile devices.
-Admin Panel: Admins can manage products, orders, and users through a dedicated dashboard.
+Welcome to August's, the online clothing platform where fashion meets functionality! 🛍️
+
+<img width="1316" alt="August's Clothing" src="https://your-image-url.com/image.png">
+
+##Overview
+
+August's is a full-stack mock-up e-commerce website built with Nuxt.js, Tailwind CSS, Node.js and MongoDB. The platform provides users with an intuitive online shopping experience, allowing them to browse, add to cart, and purchase a wide variety of clothing items. The backend, powered by Node.js and Express, exposes RESTful APIs, while the frontend leverages Nuxt.js and Tailwind CSS for a seamless, responsive user interface.
+
+##Features
+
+- Product Catalog: Browse through an extensive collection of clothing items with detailed descriptions and high-quality images.
+- Shopping Cart: Add items to your cart, adjust quantities, and proceed to checkout.
+- User Authentication: Securely register, log in, and log out.
+- Order Management: View and manage your past orders.
+- Responsive Design: Enjoy a consistent experience across desktops, tablets, and mobile devices.
+- REST API: Exposes a RESTful API for managing products, users, and orders efficiently.
