@@ -46,10 +46,10 @@ const addToCart = async (req, res) => {
       throw new CustomError.NotFoundError(`No product found with id: ${productId}`);
     }
 
-    // Check if the user has already added the item with the same size
+    // Prepare the query for finding an existing cart item
     const cartQuery = {
       user: req.user.userId,
-      product: productId, 
+      product: productId,
       productType,
     };
 
@@ -125,11 +125,7 @@ const getCartItems = async (req, res) => {
           quantity: item.quantity,
           createdAt: item.createdAt,
           updatedAt: item.updatedAt,
-          productDetails: {
-            name: productDetails.name,
-            price: productDetails.price,
-            image: productDetails.image,
-          },
+          productDetails: productDetails || null,
         };
       })
     );
