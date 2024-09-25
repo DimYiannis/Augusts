@@ -1,21 +1,21 @@
 <template>
   <div class="invbackdrop" @click.self="closeCart">
     <div class="shoppings" @mouseenter="showlog">
+      <!--the item-->
+      <div class="chosenitems">
+        <div class="text-center font-semibold">
+          <h2>Shopping Cart</h2>
+        </div>
 
-      <!-- Loader while fetching items -->
-      <div
+        <!-- Loader while fetching items -->
+        <div
           v-if="isFetchingCart || isRemovingFromCart"
           class="flex justify-center mt-10"
         >
           <Spinner />
         </div>
 
-      <!--the item-->
-      <div v-else class="chosenitems">
-        <div class="text-center font-semibold">
-          <h2>Shopping Cart</h2>
-        </div>
-        <div >
+        <div v-else>
           <div class="h-full mt-4">
             <div
               v-if="cartItems.length === 0"
@@ -131,11 +131,25 @@
       <div class="costs">
         <div class="total-items">
           <span>Total Items:</span>
-          <span>{{ totalItems }}</span>
+          <!-- Loader while fetching items -->
+          <div
+            v-if="isFetchingCart || isRemovingFromCart"
+            class="flex justify-center mt-10"
+          >
+            <Spinner />
+          </div>
+          <span v-else>{{ totalItems }}</span>
         </div>
         <div class="total-price">
           <span>Total Price:</span>
-          <span>${{ totalPrice.toFixed(2) }}</span>
+          <!-- Loader while fetching items -->
+          <div
+            v-if="isFetchingCart || isRemovingFromCart"
+            class="flex justify-center mt-10"
+          >
+            <Spinner />
+          </div>
+          <span v-else>${{ totalPrice.toFixed(2) }}</span>
         </div>
 
         <button @click="order" class="costbtn" :disabled="isOrdering">
@@ -147,9 +161,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useCartStore } from '../stores/cartStore';
-import { useModalsStore } from '../stores/modalStore';
+import { ref, computed, onMounted } from "vue";
+import { useCartStore } from "../stores/cartStore";
+import { useModalsStore } from "../stores/modalStore";
 
 const cartStore = useCartStore();
 const modalStore = useModalsStore();
@@ -162,8 +176,8 @@ onMounted(async () => {
     console.log("ShoppingBag component mounted, fetching cart items...");
     await cartStore.fetchCartItems();
   } catch (err) {
-    console.error('Error fetching cart items:', err);
-    error.value = 'Failed to load cart items. Please try again later.';
+    console.error("Error fetching cart items:", err);
+    error.value = "Failed to load cart items. Please try again later.";
   }
 });
 
@@ -171,8 +185,8 @@ const cartItems = computed(() => {
   try {
     return cartStore.cartItems || [];
   } catch (err) {
-    console.error('Error accessing cartItems:', err);
-    error.value = 'Error loading cart items.';
+    console.error("Error accessing cartItems:", err);
+    error.value = "Error loading cart items.";
     return [];
   }
 });
@@ -181,7 +195,7 @@ const totalItems = computed(() => {
   try {
     return cartStore.totalItems;
   } catch (err) {
-    console.error('Error calculating total items:', err);
+    console.error("Error calculating total items:", err);
     return 0;
   }
 });
@@ -190,7 +204,7 @@ const totalPrice = computed(() => {
   try {
     return cartStore.totalPrice;
   } catch (err) {
-    console.error('Error calculating total price:', err);
+    console.error("Error calculating total price:", err);
     return 0;
   }
 });
@@ -208,7 +222,7 @@ const removeCartItem = async (itemId) => {
     console.log("Cart items fetched");
   } catch (error) {
     console.error("Failed to delete item", error);
-    error.value = 'Failed to remove item from cart. Please try again.';
+    error.value = "Failed to remove item from cart. Please try again.";
   }
 };
 
@@ -218,6 +232,7 @@ const isRemovingFromCart = computed(() => cartStore.isRemovingFromCart);
 
 // Expose necessary methods and computed properties
 const order = () => cartStore.order();
-const patchCart = (itemId, newQuantity) => cartStore.patchCart(itemId, newQuantity);
+const patchCart = (itemId, newQuantity) =>
+  cartStore.patchCart(itemId, newQuantity);
 const decrementCart = (itemId) => cartStore.decrementCart(itemId);
 </script>
