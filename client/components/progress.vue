@@ -3,8 +3,8 @@
 </template>
 <style scoped>  
 .loader {
-  width: 100px;
-  height: 20px;
+  width: 50px;
+  height: 10px;
   -webkit-mask: radial-gradient(circle closest-side,#000 94%,#0000) left/20% 100%;
   background: linear-gradient(#000 0 0) left/0% 100% no-repeat #ddd;
   animation: l17 2s infinite steps(6);
