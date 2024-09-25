@@ -61,7 +61,8 @@ const createlike = async (req, res) => {
         user: req.user.userId,
         product: dbProduct._id,
         productType,
-        size,
+        // Only include size if it's not an accessory
+        ...(productType !== 'Accessories' && { size }),
       });
       await newLike.save();
 

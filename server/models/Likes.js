@@ -20,7 +20,10 @@ const LikeSchema = mongoose.Schema(
     },
     size: {
       type: String,
-      required: true,
+      enum: ['S', 'M', 'L', 'XL', 'XXL', null],
+      required: function() {
+        return this.productType !== 'Accessories';
+      }
     },
   },
   { timestamps: true }
