@@ -48,6 +48,10 @@
         </button>
 
         <div class="text-center">
+          <a class="underline font-semibold cursor-pointer" @click="useDemo">Use Demo Account</a>
+        </div>
+
+        <div class="text-center">
           <a class="underline font-semibold"> Forgot Password? </a>
         </div>
       </form>
@@ -75,9 +79,7 @@ const login = async () => {
     if (result) {
       const userResult = await userStore.getUser();
       if (userResult) {
-       
         closeLogin();
-      
       } else {
         error.value = "Failed to fetch user data";
       }
@@ -100,5 +102,11 @@ const closeLogin = () => {
 
 const toggleSignup = () => {
   modalStore.toggleSignUp();
+};
+
+const useDemo = () => {
+  email.value = 'user@email.com';
+  password.value = 'secret';
+  login();
 };
 </script>
