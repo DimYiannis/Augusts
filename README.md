@@ -2,12 +2,12 @@
 
 Welcome to August's, the online clothing platform where fashion meets functionality! 🛍️
 
-![image](https://github.com/user-attachments/assets/c70e0566-5649-47bc-be0b-661caa66cf4e)
+![image](https://github.com/user-attachments/assets/f4ccc3d2-bb85-406d-a0c1-a17d45d8001c)
 
 
 ## Overview
 
-August's is a full-stack mock-up e-commerce website built with Nuxt.js, Tailwind CSS, Node.js and MongoDB. The platform provides users with an intuitive online shopping experience, allowing them to browse, add to cart, and purchase a wide variety of clothing items. The backend, powered by Node.js and Express, exposes RESTful APIs, while the frontend leverages Nuxt.js and Tailwind CSS for a seamless, responsive user interface.
+August's is a full-stack mock-up e-commerce website built with Nuxt.js, Pinia, Tailwind CSS, Node.js and MongoDB. The platform provides users with an intuitive online shopping experience, allowing them to browse, add to cart, and purchase a wide variety of clothing items. The backend, powered by Node.js and Express, exposes RESTful APIs, while the frontend leverages Nuxt.js and Tailwind CSS for a seamless, responsive user interface.
 
 ![image](https://github.com/user-attachments/assets/56cb24a6-29ab-4639-b973-397de8bf85bf)
 
