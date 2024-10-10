@@ -104,7 +104,7 @@ const start = async () => {
     await connectDB(process.env.MONGO_URL);
     app.listen(port, console.log(`server is listening ${port}...`));
 
-    // Periodically send a keep-alive request every 5 minutes (adjust as needed)
+    // Periodically send a keep-alive request every 10 minutes (adjust as needed)
     setInterval(() => {
       
       axios.get('https://augusts.onrender.com/api/v1/keep-alive')

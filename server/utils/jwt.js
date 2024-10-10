@@ -26,11 +26,23 @@ const attachCookiesToResponse = ({ res, user }) => {
     sameSite: 'None',
     
   });
-  
 };
+
+const logoutUser = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None',
+    signed: true,
+  });
+
+  res.status(200).json({ message: 'User logged out successfully' });
+};
+
 
 module.exports = {
   createJWT,
   istokenValid,
   attachCookiesToResponse,
+  logoutUser
 };

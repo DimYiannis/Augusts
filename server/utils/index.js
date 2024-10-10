@@ -1,4 +1,4 @@
-const { createJWT, istokenValid, attachCookiesToResponse, } = require("./jwt");
+const { createJWT, istokenValid, attachCookiesToResponse, logoutUser} = require("./jwt");
 const createTokenUser = require('./createTokenUser')
 const checkPermissions = require('./checkPermissions')
 
@@ -7,5 +7,6 @@ module.exports = {
   istokenValid,
   attachCookiesToResponse,
   createTokenUser,
-  checkPermissions
+  checkPermissions,
+  logoutUser
 };
