@@ -28,10 +28,12 @@ const attachCookiesToResponse = ({ res, user }) => {
   });
 };
 
-const logoutUser = (res) => {
-  if (!res) {
-    throw new Error("Response object is undefined in logoutUser");
+const logoutUser = (req, res) => {
+  if (!res || typeof res.clearCookie !== 'function') {
+    throw new Error("Response object is undefined or does not have clearCookie function");
   }
+
+  console.log('Clearing cookie...');
 
   // Clear the 'token' cookie
   res.clearCookie('token', {
