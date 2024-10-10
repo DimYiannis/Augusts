@@ -28,7 +28,12 @@ const attachCookiesToResponse = ({ res, user }) => {
   });
 };
 
-const logoutUser = (req, res) => {
+const logoutUser = (res) => {
+  if (!res) {
+    throw new Error("Response object is undefined in logoutUser");
+  }
+
+  // Clear the 'token' cookie
   res.clearCookie('token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -38,6 +43,7 @@ const logoutUser = (req, res) => {
 
   res.status(200).json({ message: 'User logged out successfully' });
 };
+
 
 
 module.exports = {
