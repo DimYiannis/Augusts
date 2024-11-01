@@ -52,7 +52,7 @@ app.use(fileUpload());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(
   cors({
-    origin: [process.env.DEV, process.env.PROD],
+    origin: [process.env.DEV, 'https://augustsv2.netlify.app'],
     credentials: true,
     allowedHeaders: ['Content-Type','Authorization']
   })
@@ -73,7 +73,6 @@ app.get("/api/v1", (req, res) => {
     path: '/',
     expires: new Date('2024-12-24T17:20:31.000Z'),
     httpOnly: true,
-    //secure: process.env.PROD === "production",
     secure: true, // Set to true for HTTPS connections, production
     // secure: false, // For development, set to false
     sameSite: 'None', // Set to 'None' for cross-origin requests
