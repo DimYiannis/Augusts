@@ -52,7 +52,7 @@ app.use(fileUpload());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(
   cors({
-    origin: [process.env.DEV, 'https://augustsv2.netlify.app'],
+    origin: [process.env.DEV, process.env.PROD],
     credentials: true,
     allowedHeaders: ['Content-Type','Authorization']
   })
