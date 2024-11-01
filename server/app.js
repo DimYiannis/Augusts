@@ -73,7 +73,8 @@ app.get("/api/v1", (req, res) => {
     path: '/',
     expires: new Date('2024-12-24T17:20:31.000Z'),
     httpOnly: true,
-    secure: true, // Set to true for HTTPS connections, production
+    secure: process.env.NODE_ENV === "production",
+    //secure: true, // Set to true for HTTPS connections, production
     // secure: false, // For development, set to false
     sameSite: 'None', // Set to 'None' for cross-origin requests
   });
