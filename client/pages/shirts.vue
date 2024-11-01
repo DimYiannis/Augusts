@@ -38,7 +38,7 @@
 
   async created() {
   try {
-    const response = await axios.get("https://augusts.onrender.com/api/v1/shirts");
+    const response = await axios.get("https://augusts-production.up.railway.app/api/v1/shirts");
 
     if (response.data && response.data.product) {
       this.items = response.data.product.map(product => ({

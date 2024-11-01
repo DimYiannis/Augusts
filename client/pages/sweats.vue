@@ -38,7 +38,7 @@ export default {
 
   async created() {
     try {
-      const response = await axios.get("https://augusts.onrender.com/api/v1/sweats");
+      const response = await axios.get("https://augusts-production.up.railway.app/api/v1/sweats");
 
       this.items = response.data.posts.map(product => ({
         ...product,
