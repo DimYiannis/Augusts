@@ -52,7 +52,7 @@ app.use(fileUpload());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://augustsv2.netlify.app'],
+    origin: [process.env.DEV, process.env.PROD],
     credentials: true,
     allowedHeaders: ['Content-Type','Authorization']
   })
@@ -107,7 +107,7 @@ const start = async () => {
     // Periodically send a keep-alive request every 10 minutes (adjust as needed)
     setInterval(() => {
       
-      axios.get('https://augusts.onrender.com/api/v1/keep-alive')
+      axios.get('https://augusts-production.up.railway.app/api/v1/keep-alive')
       .then(response => console.log(response.data))
       .catch(error => console.error('Keep-alive failed', error));
 
