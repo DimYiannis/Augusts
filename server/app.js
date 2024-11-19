@@ -50,13 +50,29 @@ app.use(express.static(path.join(__dirname, "./public")));
 app.use(express.json());
 app.use(fileUpload());
 app.use(cookieParser(process.env.JWT_SECRET));
+
+const allowedOrigins = process.env.ALLOW_CORS.split(',');
+
 app.use(
   cors({
-    origin: [process.env.DEV, 'https://augustsv2.netlify.app'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    allowedHeaders: ['Content-Type','Authorization']
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+// app.use(
+//   cors({
+//     origin: process.env.ALLOW_CORS,
+//     credentials: true,
+//     allowedHeaders: ['Content-Type','Authorization']
+//   })
+// );
 
 app.use(helmet());
 app.use(xss());
@@ -73,8 +89,8 @@ app.get("/api/v1", (req, res) => {
     path: '/',
     expires: new Date('2024-12-24T17:20:31.000Z'),
     httpOnly: true,
-    secure: true, // Set to true for HTTPS connections, production
-    // secure: false, // For development, set to false
+    //secure: true, // Set to true for HTTPS connections, production
+    secure: false, // For development, set to false
     sameSite: 'None', // Set to 'None' for cross-origin requests
   });
 });
