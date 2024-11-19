@@ -13,7 +13,7 @@ export const useCartStore = defineStore("cart", {
     async fetchCartItems() {
       this.isFetchingCart = true;
       try {
-        const response = await axios.get( `${process.env.VITE_API_BASE_URL}/api/v1/cart`, {
+        const response = await axios.get("https://augusts-production.up.railway.app/api/v1/cart", {
           withCredentials: true,
         });
         console.log("Cart items fetched successfully:", response.data);
@@ -40,7 +40,7 @@ export const useCartStore = defineStore("cart", {
         };
         console.log("Payload being sent:", payload);
         const response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/orders`,
+          "https://augusts-production.up.railway.app/api/v1/orders",
           payload,
           { withCredentials: true }
         );
@@ -60,7 +60,7 @@ export const useCartStore = defineStore("cart", {
         console.log("Payload being sent:", payload);
         
         const response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/cart`,
+          "https://augusts-production.up.railway.app/api/v1/cart",
           payload,
           { withCredentials: true }
         );
@@ -90,7 +90,7 @@ export const useCartStore = defineStore("cart", {
           throw new Error("Invalid item ID format");
         }
         console.log("Item ID passed to removeCartItem:", itemId);
-        await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/v1/cart/${itemId}`, {
+        await axios.delete(`https://augusts-production.up.railway.app/api/v1/cart/${itemId}`, {
           withCredentials: true,
         });
         this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
@@ -121,7 +121,7 @@ export const useCartStore = defineStore("cart", {
         const currentQuantity = this.cartItems[index].quantity;
         const newQuantity = currentQuantity + 1;
         const response = await axios.patch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/cart/${itemId}`,
+          `https://augusts-production.up.railway.app/api/v1/cart/${itemId}`,
           { quantity: newQuantity },
           { withCredentials: true }
         );
@@ -154,7 +154,7 @@ export const useCartStore = defineStore("cart", {
         const currentQuantity = this.cartItems[index].quantity;
         const newQuantity = currentQuantity - 1;
         const response = await axios.patch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/cart/${itemId}`,
+          `https://augusts-production.up.railway.app/api/v1/cart/${itemId}`,
           { quantity: newQuantity },
           { withCredentials: true }
         );
