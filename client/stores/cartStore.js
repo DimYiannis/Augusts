@@ -13,7 +13,7 @@ export const useCartStore = defineStore("cart", {
     async fetchCartItems() {
       this.isFetchingCart = true;
       try {
-        const response = await axios.get( `${import.meta.env.VITE_API_BASE_URL}/api/v1/cart`, {
+        const response = await axios.get( `${process.env.VITE_API_BASE_URL}/api/v1/cart`, {
           withCredentials: true,
         });
         console.log("Cart items fetched successfully:", response.data);
