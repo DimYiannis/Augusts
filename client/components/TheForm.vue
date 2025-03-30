@@ -1,5 +1,5 @@
 <template>
-  <div class="tablet:mt-2 h-fit mb-15">
+  <div class="tablet:mt-2 h-fit mb-16">
     <form class="form" @submit.prevent="handleSubmit">
       <h1 class="text-center font-semibold text-lg">
         Why wait? Sign up now and start shopping
