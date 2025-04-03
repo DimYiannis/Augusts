@@ -25,5 +25,24 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+  modules: [
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode"
+  ],
+
+  runtimeConfig: {
+    // Private keys that are exposed to the server
+    mongoUrl: process.env.MONGO_URL,
+    jwtSecret: process.env.JWT_SECRET,
+    // Public keys that are exposed to the client
+    public: {
+      apiBase: '/api'
+    }
+  },
+
+  nitro: {
+    plugins: ['~/server/plugins/mongoose.ts']
+  }
 });
