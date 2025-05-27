@@ -123,7 +123,7 @@ const start = async () => {
     // Periodically send a keep-alive request every 10 minutes (adjust as needed)
     setInterval(() => {
       
-      axios.get('https://augusts-production.up.railway.app/api/v1/keep-alive')
+      axios.get('https://augusts.onrender.com/api/v1/keep-alive')
       .then(response => console.log(response.data))
       .catch(error => console.error('Keep-alive failed', error));
 
