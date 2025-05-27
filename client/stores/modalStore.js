@@ -36,7 +36,7 @@ export const useModalsStore = defineStore("modal", {
     async fetchFavItems() {
       this.isFetchingFav = true;
       try {
-        const response = await axios.get("https://augusts-production.up.railway.app/api/v1/likes", {
+        const response = await axios.get("https://augusts.onrender.com/api/v1/likes", {
           withCredentials: true,
         });
         this.favItems = response.data.likes;
@@ -55,7 +55,7 @@ export const useModalsStore = defineStore("modal", {
         console.log("Payload being sent:", payload);
 
         const response = await axios.post(
-          "https://augusts-production.up.railway.app/api/v1/likes",
+          "https://augusts.onrender.com/api/v1/likes",
           payload,
           { withCredentials: true }
         );
@@ -88,7 +88,7 @@ export const useModalsStore = defineStore("modal", {
     async removeFromFav(itemId) {
       this.isRemovingFromFav = true;
       try {
-        await axios.delete(`https://augusts-production.up.railway.app/api/v1/likes/${itemId}`, {
+        await axios.delete(`https://augusts.onrender.com/api/v1/likes/${itemId}`, {
           withCredentials: true,
         });
         console.log("Item removed from favorites successfully");

@@ -12,7 +12,7 @@ export const useOrderStore = defineStore('order', {
       this.isLoading = true;
       this.error = null;
       try {
-        const response = await axios.get('https://augusts-production.up.railway.app/api/v1/orders/showAllMyOrders', { withCredentials: true });
+        const response = await axios.get('https://augusts.onrender.com/api/v1/orders/showAllMyOrders', { withCredentials: true });
         this.orders = response.data.orders;
       } catch (error) {
         console.error('Error fetching orders:', error);
@@ -25,7 +25,7 @@ export const useOrderStore = defineStore('order', {
       this.isLoading = true;
       this.error = null;
       try {
-        await axios.delete(`https://augusts-production.up.railway.app/api/v1/orders/${orderId}`, { withCredentials: true });
+        await axios.delete(`https://augusts.onrender.com/api/v1/orders/${orderId}`, { withCredentials: true });
         this.orders = this.orders.filter(order => order._id !== orderId);
       } catch (error) {
         console.error('Error deleting order:', error);

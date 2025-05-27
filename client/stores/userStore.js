@@ -11,7 +11,7 @@ export const useUserStore = defineStore("user", {
     async login(email, password) {
       try {
         const response = await axios.post(
-          "https://augusts-production.up.railway.app/api/v1/auth/login",
+          "https://augusts.onrender.com/api/v1/auth/login",
           { email, password },
           { withCredentials: true }
         );
@@ -28,7 +28,7 @@ export const useUserStore = defineStore("user", {
     },
     async logout() {
       try {
-        const response = await axios.get("https://augusts-production.up.railway.app/api/v1/auth/logout", {
+        const response = await axios.get("https://augusts.onrender.com/api/v1/auth/logout", {
           withCredentials: true,
         });
         console.log(response);
@@ -45,7 +45,7 @@ export const useUserStore = defineStore("user", {
         console.log("Fetching user data...");
 
         const response = await axios.get(
-          "https://augusts-production.up.railway.app/api/v1/users/showUser",
+          "https://augusts.onrender.com/api/v1/users/showUser",
           { withCredentials: true }
         );
         console.log("Get user response:", response.data);
