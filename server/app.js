@@ -66,13 +66,13 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-app.use(
-  cors({
-    origin: process.env.ALLOW_CORS,
-    credentials: true,
-    allowedHeaders: ['Content-Type','Authorization']
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.ALLOW_CORS,
+//     credentials: true,
+//     allowedHeaders: ['Content-Type','Authorization']
+//   })
+// );
 
 app.use(helmet());
 app.use(xss());
